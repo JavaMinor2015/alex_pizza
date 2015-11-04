@@ -5,6 +5,7 @@ import pizza.domain.Topping;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,17 +35,17 @@ public class PizzaRepository implements Serializable {
                                 Arrays.asList(
                                         Topping.builder()
                                                 .name("Peperoni")
-                                                .extraPrice(1.0)
+                                                .extraPrice(new BigDecimal(1.0))
                                                 .build()
                                         ,
                                         Topping.builder()
                                                 .name("Onions")
-                                                .extraPrice(0.5)
+                                                .extraPrice(new BigDecimal(0.5))
                                                 .build())
                         )
-                        .price(10.0)
-                        .build()
-        );
+                                        .price(new BigDecimal(10.0))
+                                        .build()
+                        );
         pizzaList.add(
                 Pizza.builder()
                         .id(1)
@@ -53,15 +54,15 @@ public class PizzaRepository implements Serializable {
                                 Arrays.asList(
                                         Topping.builder()
                                                 .name("Pineapple")
-                                                .extraPrice(2.0)
+                                                .extraPrice(new BigDecimal(2.0))
                                                 .build()
                                         ,
                                         Topping.builder()
                                                 .name("Ham")
-                                                .extraPrice(0.33)
+                                                .extraPrice(new BigDecimal(0.33))
                                                 .build())
                         )
-                        .price(10.0)
+                        .price(new BigDecimal(10.0))
                         .build()
         );
     }

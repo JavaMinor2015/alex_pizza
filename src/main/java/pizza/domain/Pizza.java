@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -14,20 +15,21 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class Pizza implements Serializable{
+public class Pizza implements Serializable {
     private int id;
     private String name;
     private List<Topping> toppings;
 
     @Getter(AccessLevel.NONE)
-    private double price;
+    private BigDecimal price;
 
-    public double getPrice() {
-        double total = price;
+    public BigDecimal getPrice() {
+        BigDecimal total = price;
 
         for (Topping topping : toppings) {
-            total += topping.getExtraPrice();
+            total = total.add(topping.getExtraPrice());
         }
-        return total;
+
+        return total.setScale(2, BigDecimal.ROUND_UP);
     }
 }

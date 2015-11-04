@@ -9,6 +9,7 @@ import pizza.domain.OrderItem;
 import pizza.domain.Pizza;
 import pizza.domain.beans.PizzaRequestBean;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -33,11 +34,14 @@ public class OrderService implements Serializable {
     @EJB
     PizzaRequestBean pizzaBean;
 
+    @PostConstruct
     public void init() {
-        pizzas = pizzaBean.getAll();
-        order = new Order();
-        for (Pizza pizza : pizzas) {
-            order.add(new OrderItem(pizza, 0));
+        if(pizzas == null) {
+            pizzas = pizzaBean.getAll();
+            order = new Order();
+            for (Pizza pizza : pizzas) {
+                order.add(new OrderItem(pizza, 0));
+            }
         }
     }
 
@@ -46,7 +50,6 @@ public class OrderService implements Serializable {
         for (OrderItem orderItem : order.getOrderItems()) {
             orderStatus += orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n";
         }
-        // TODO remove configbean and replace with pizzaREquestBean
         pizzaBean.addOrder(order);
     }
 }

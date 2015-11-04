@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by alex on 11/3/15.
@@ -14,5 +15,5 @@ import java.io.Serializable;
 @Builder
 public class Topping implements Serializable {
     private String name;
-    private Double extraPrice;
+    private BigDecimal extraPrice;
 }
