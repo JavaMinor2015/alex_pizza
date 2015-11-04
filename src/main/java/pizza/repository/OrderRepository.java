@@ -2,7 +2,7 @@ package pizza.repository;
 
 import lombok.Getter;
 import lombok.Setter;
-import pizza.domain.Order;
+import pizza.domain.concrete.Order;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;

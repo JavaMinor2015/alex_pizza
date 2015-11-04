@@ -1,4 +1,4 @@
-package pizza.domain;
+package pizza.domain.concrete;
 
 import lombok.Getter;
 import lombok.Setter;

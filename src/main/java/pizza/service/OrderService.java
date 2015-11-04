@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import pizza.domain.Order;
-import pizza.domain.OrderItem;
-import pizza.domain.Pizza;
+import pizza.domain.concrete.Order;
+import pizza.domain.concrete.OrderItem;
+import pizza.domain.concrete.Pizza;
 import pizza.domain.beans.PizzaRequestBean;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by alex on 11/3/15.
  */
-@Named
+@Named("orderService")
 @SessionScoped
 @Getter
 @Setter

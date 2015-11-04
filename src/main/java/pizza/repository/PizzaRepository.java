@@ -1,7 +1,7 @@
 package pizza.repository;
 
-import pizza.domain.Pizza;
-import pizza.domain.Topping;
+import pizza.domain.concrete.Pizza;
+import pizza.domain.concrete.Topping;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
@@ -43,9 +43,9 @@ public class PizzaRepository implements Serializable {
                                                 .extraPrice(new BigDecimal(0.5))
                                                 .build())
                         )
-                                        .price(new BigDecimal(10.0))
-                                        .build()
-                        );
+                        .price(new BigDecimal(10.0))
+                        .build()
+        );
         pizzaList.add(
                 Pizza.builder()
                         .id(1)

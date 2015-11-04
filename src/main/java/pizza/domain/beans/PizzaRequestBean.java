@@ -1,7 +1,7 @@
 package pizza.domain.beans;
 
-import pizza.domain.Order;
-import pizza.domain.Pizza;
+import pizza.domain.concrete.Order;
+import pizza.domain.concrete.Pizza;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
 
@@ -26,13 +26,13 @@ public class PizzaRequestBean implements Serializable {
         pizzaRepository.add(pizza);
     }
 
+    public void addOrder(final Order order) {
+        orderRepository.addItem(stripEmptyOrders(order));
+    }
+
     public List<Pizza> getAll() {
         pizzaRepository.load();
         return pizzaRepository.getAll();
-    }
-
-    public void addOrder(final Order order) {
-        orderRepository.addItem(stripEmptyOrders(order));
     }
 
     private Order stripEmptyOrders(final Order order) {

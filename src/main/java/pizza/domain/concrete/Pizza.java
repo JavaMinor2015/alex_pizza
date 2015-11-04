@@ -1,4 +1,4 @@
-package pizza.domain;
+package pizza.domain.concrete;
 
 import lombok.AccessLevel;
 import lombok.Builder;
