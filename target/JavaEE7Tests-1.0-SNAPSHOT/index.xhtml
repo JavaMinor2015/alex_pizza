@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<h:head>
+    <title>Facelets Hello Greeting</title>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <h:selectOneMenu value="#{calculator.fromCurrency}">
+            <f:selectItems value="#{currencyRepository.getCurrencies()}"/>
+            <f:ajax event="change" listener="#{calculator.convertAll}" render="currencyTable"/>
+        </h:selectOneMenu>
+        <h:inputText value="#{calculator.amount}"
+                     id="amount"
+                     p:type="number"
+                     p:min="1"
+                     p:max="1000000000000">
+            <f:ajax event="blur" listener="#{calculator.convertAll}" render="currencyTable"/>
+        </h:inputText>
+        <!--<h:commandButton type="submit" value="Refresh"/>-->
+
+
+        <h:dataTable id="currencyTable" value="#{currencyRepository.getCurrencies()}" var="c" border="1"
+                     style="align-content: center">
+            <h:column>
+                <f:facet name="header">
+                    Code
+                    <h:commandLink action="#{currencyRepository.sortBy('NAME','asc')}">
+                        ASC
+                    </h:commandLink>
+                    |
+                    <h:commandLink action="#{currencyRepository.sortBy('NAME','desc')}">
+                        DESC
+                    </h:commandLink>
+                </f:facet>
+                <h:inputText value="#{c.code}"
+                             rendered="#{c.edited}"/>
+                <h:outputText value="#{c.code}"
+                              rendered="#{not c.edited}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    Rate in dollars
+                    <h:commandLink action="#{currencyRepository.sortBy('VALUE_IN_DOLLARS','asc')}">
+                        ASC
+                    </h:commandLink>
+                    |
+                    <h:commandLink action="#{currencyRepository.sortBy('VALUE_IN_DOLLARS','desc')}">
+                        DESC
+                    </h:commandLink>
+                </f:facet>
+                <h:inputText value="#{c.valueInDollars}"
+                             rendered="#{c.edited}"/>
+                <h:outputText value="#{c.valueInDollars}"
+                              rendered="#{not c.edited}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    This in #{calculator.fromCurrency}
+                    <h:commandLink action="#{currencyRepository.sortBy('VALUE','asc')}">
+                        ASC
+                    </h:commandLink>
+                    |
+                    <h:commandLink action="#{currencyRepository.sortBy('VALUE','desc')}">
+                        DESC
+                    </h:commandLink></f:facet>
+                <!--<h:inputText value="#{c.value}"-->
+                <!--rendered="#{c.edited}" />-->
+                <h:outputText value="#{c.value}"
+                              rendered="#{not c.edited}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{calculator.fromCurrency} in this
+                    <h:commandLink action="#{currencyRepository.sortBy('INVERSE_VALUE','asc')}">
+                        ASC
+                    </h:commandLink>
+                    |
+                    <h:commandLink action="#{currencyRepository.sortBy('INVERSE_VALUE','desc')}">
+                        DESC
+                    </h:commandLink></f:facet>
+                <!--<h:inputText value="#{c.inverseValue}"-->
+                <!--rendered="#{c.edited}" />-->
+                <h:outputText value="#{c.inverseValue}"
+                              rendered="#{not c.edited}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Delete</f:facet>
+                <h:commandLink value="[X]"
+                               action="#{currencyRepository.delete(c)}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Edit</f:facet>
+                <h:commandLink value="[E]"
+                               action="#{currencyRepository.edit(c)}"
+                               rendered="#{not c.edited}"/>
+            </h:column>
+        </h:dataTable>
+        <h:commandButton value="Add New Row"
+                         action="#{currencyRepository.add()}"/>
+        <h:commandButton value="Save Changes"
+                         action="#{currencyRepository.save()}"/>
+    </h:form>
+
+
+    <h:form id="uploadFormId" enctype="multipart/form-data">
+        <h:inputFile id="fileToUpload" required="true" p:multiple="multiple"
+                     requiredMessage="No file selected ..." value="#{uploader.file}"/>
+        <h:commandButton value="Upload" action="#{uploader.upload()}"/>
+    </h:form>
+
+    <div class="messagecolor">
+        <h:messages showSummary="true"
+                    showDetail="false"
+                    errorStyle="color: #d20005"
+                    infoStyle="color: blue"/>
+    </div>
+</h:body>
+</html>

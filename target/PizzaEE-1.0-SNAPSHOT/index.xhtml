@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<h:head>
+    <title>Facelets Hello Greeting</title>
+</h:head>
+<h:body>
+    <h:form prependId="false">
+        <h:dataTable id="pizzaTable" value="#{orderService.getAllPizzas()}" var="p" border="1"
+                     style="align-content: center">
+            <h:column>
+                <f:facet name="header">
+                    Name
+                </f:facet>
+                <h:outputText value="#{p.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    Price
+                </f:facet>
+                <h:outputText value="#{p.getPrice()}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    Amount
+                </f:facet>
+                <h:dataTable id="orderTable" value="#{orderService.getOrder().amounts.get(p.getId())}" var="o"
+                             border="1"
+                             style="align-content: center">
+                    <h:column>
+                        <h:inputText value="#{o}"
+                                     p:type="number"
+                                     p:min="0"
+                                     p:max="20"/>
+                    </h:column>
+                </h:dataTable>
+            </h:column>
+        </h:dataTable>
+        <h:commandButton type="submit" value="Order">
+            <f:ajax event="click" listener="#{orderService.order()}" execute="@form" render="result"/>
+        </h:commandButton>
+        <h:outputText id="result" value="#{orderService.orderStatus}"/>
+    </h:form>
+
+    <div class="messagecolor">
+        <h:messages showSummary="true"
+                    showDetail="false"
+                    errorStyle="color: #d20005"
+                    infoStyle="color: blue"/>
+    </div>
+</h:body>
+</html>

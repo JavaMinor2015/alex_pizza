@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:form>
+        <label for="name">Name: </label>
+        <h:inputText value="#{person.name}" id="name" />
+        <br/>
+        <label for="department">Department: </label>
+        <h:inputText value="#{person.department}" id="department" />
+        <br/>
+        <label for="street">City: </label>
+        <h:inputText value="#{person.address.city}" id="city" />
+        <br/>
+        <label for="zip">Zip Code: </label>
+        <h:inputText value="#{person.address.zipCode}" id="zip" />
+        <br/>
+        <label for="street">Street: </label>
+        <h:inputText value="#{person.address.streetName}" id="street" />
+        <br/>
+        <label for="number">Number: </label>
+        <h:inputText value="#{person.address.number}" id="number" />
+        <br/>
+        <label for="appendix">Appendix: </label>
+        <h:inputText value="#{person.address.appendix}" id="appendix" />
+        <br/>
+        <h:commandButton type="submit" value="submit" />
+
+        <br/>
+        <br/>
+        <h:outputText value="Person a valid string:#{person.getSomethingValid()}" />
+        <br/>
+        <h:outputText value="Person an invalid string: #{person.getSomethingInvalid()}" />
+        <br/>
+        <h:outputText value="Employee a valid string: #{employee.getSomethingValid()}"/>
+    </h:form>
+
+
+
+    <div class="messagecolor">
+        <h:messages showSummary="true"
+                    showDetail="false"
+                    errorStyle="color: #d20005"
+                    infoStyle="color: blue"/>
+    </div>
+</f:view>
+</html>
