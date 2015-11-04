@@ -24,7 +24,6 @@ public class OrderRepository implements Serializable {
     }
 
     public void load(){
-
         // magical persistence here
     }
 
