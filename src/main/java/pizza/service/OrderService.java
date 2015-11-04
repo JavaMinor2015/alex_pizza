@@ -5,14 +5,16 @@ import lombok.Setter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import pizza.domain.Order;
+import pizza.domain.OrderItem;
 import pizza.domain.Pizza;
 import pizza.domain.beans.ConfigBean;
+import pizza.repository.OrderRepository;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ import java.util.List;
 @SessionScoped
 @Getter
 @Setter
-public class OrderService implements Serializable{
+public class OrderService implements Serializable {
 
     private static final Logger LOGGER = LogManager.getLogger(OrderService.class.getName());
 
@@ -33,19 +35,20 @@ public class OrderService implements Serializable{
     @EJB
     ConfigBean pizzaBean;
 
-    public void init(){
+    @Inject
+    OrderRepository orderRepository;
+
+    public void init() {
         pizzas = pizzaBean.getPizzaRequestBean().getAll();
         order = new Order();
-        order.setPizzaList(pizzas);
-        List<Integer> amounts = new ArrayList<>();
+
         for (Pizza pizza : pizzas) {
-            amounts.add(0);
+            order.addOrderItem(new OrderItem(pizza, 0));
         }
-        order.setAmounts(amounts);
     }
 
     public List<Pizza> getAllPizzas() {
-        if(pizzas == null) {
+        if (pizzas == null) {
             init();
         }
         return pizzas;
@@ -60,13 +63,10 @@ public class OrderService implements Serializable{
         return pizzas.get(0);
     }
 
-    public void order(){
+    public void order() {
         orderStatus = "";
-        for (int i = 0; i < order.getAmounts().size(); i++) {
-            orderStatus += order.getPizzaList().get(i).getName();
-            orderStatus += "@";
-            orderStatus += order.getAmounts().get(i);
-            orderStatus += "\n";
+        for (OrderItem orderItem : order.getOrderItems()) {
+            orderStatus += orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n";
         }
     }
 }
