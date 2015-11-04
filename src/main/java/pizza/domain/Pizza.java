@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class Pizza {
+public class Pizza implements Serializable{
     private int id;
     private String name;
     private List<Topping> toppings;

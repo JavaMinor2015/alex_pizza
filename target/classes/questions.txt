@@ -1,3 +1,0 @@
-Hoe hoog is de eifeltoren in meters? @ 324
-Hoe lang is een marathon in km afgerond op 1 decimaal? @ 42.2
-Hoeveel mensen wonen er in 2015 op aarde in miljarden afgerond op 1 decimaal? @ 7.1

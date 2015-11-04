@@ -9,7 +9,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 <h:head>
-    <title>Facelets Hello Greeting</title>
+    <title>Effe wachten nog..</title>
 </h:head>
 <h:body>
     <h:form prependId="false">
@@ -38,9 +38,11 @@
                              p:max="20"/>
             </h:column>
         </h:dataTable>
+        <br/>
         <h:commandButton type="submit" value="Order">
             <f:ajax event="click" listener="#{orderService.order()}" execute="@form" render="result"/>
         </h:commandButton>
+        <br/>
         <h:outputText id="result" value="#{orderService.orderStatus}"/>
     </h:form>
 

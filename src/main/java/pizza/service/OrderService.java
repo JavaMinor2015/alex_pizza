@@ -7,12 +7,10 @@ import org.apache.log4j.Logger;
 import pizza.domain.Order;
 import pizza.domain.OrderItem;
 import pizza.domain.Pizza;
-import pizza.domain.beans.ConfigBean;
-import pizza.repository.OrderRepository;
+import pizza.domain.beans.PizzaRequestBean;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -33,34 +31,14 @@ public class OrderService implements Serializable {
     private Order order;
 
     @EJB
-    ConfigBean pizzaBean;
-
-    @Inject
-    OrderRepository orderRepository;
+    PizzaRequestBean pizzaBean;
 
     public void init() {
-        pizzas = pizzaBean.getPizzaRequestBean().getAll();
+        pizzas = pizzaBean.getAll();
         order = new Order();
-
         for (Pizza pizza : pizzas) {
-            order.addOrderItem(new OrderItem(pizza, 0));
+            order.add(new OrderItem(pizza, 0));
         }
-    }
-
-    public List<Pizza> getAllPizzas() {
-        if (pizzas == null) {
-            init();
-        }
-        return pizzas;
-    }
-
-    public Pizza get(final String pizzaName) {
-        for (Pizza c : pizzas) {
-            if (c.getName().equals(pizzaName)) {
-                return c;
-            }
-        }
-        return pizzas.get(0);
     }
 
     public void order() {
@@ -68,5 +46,7 @@ public class OrderService implements Serializable {
         for (OrderItem orderItem : order.getOrderItems()) {
             orderStatus += orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n";
         }
+        // TODO remove configbean and replace with pizzaREquestBean
+        pizzaBean.addOrder(order);
     }
 }

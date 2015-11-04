@@ -1,26 +1,44 @@
 package pizza.domain.beans;
 
+import pizza.domain.Order;
 import pizza.domain.Pizza;
+import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by alex on 11/3/15.
  */
 @Stateful
-public class PizzaRequestBean {
+public class PizzaRequestBean implements Serializable {
 
     @Inject
-    PizzaRepository repository;
+    PizzaRepository pizzaRepository;
 
-    public void add(final Pizza pizza) {
-        repository.add(pizza);
+    @Inject
+    OrderRepository orderRepository;
+
+    public void addPizza(final Pizza pizza) {
+        pizzaRepository.add(pizza);
     }
 
-    public List<Pizza> getAll(){
-        return repository.getAll();
+    public List<Pizza> getAll() {
+        pizzaRepository.load();
+        return pizzaRepository.getAll();
+    }
+
+    public void addOrder(final Order order) {
+        orderRepository.addItem(stripEmptyOrders(order));
+    }
+
+    private Order stripEmptyOrders(final Order order) {
+        order.getOrderItems().stream()
+                .filter(orderItem -> orderItem.getAmount() < 1)
+                .forEach(order::remove);
+        return order;
     }
 }
