@@ -1,9 +1,6 @@
 package pizza.domain.concrete.persist;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +14,8 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pizza implements Serializable {
     private static final long serialVersionUID = -2394835763685701096L;
 
@@ -26,19 +25,19 @@ public class Pizza implements Serializable {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Topping> toppings;
 
     @Getter(AccessLevel.NONE)
-    private BigDecimal price;
+    private double price;
 
-    public BigDecimal getPrice() {
-        BigDecimal total = price;
+    public double getPrice() {
+        double total = price;
 
         for (Topping topping : toppings) {
-            total = total.add(topping.getExtraPrice());
+            total += topping.getExtraPrice();
         }
 
-        return total.setScale(2, BigDecimal.ROUND_UP);
+        return total;
     }
 }

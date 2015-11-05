@@ -42,14 +42,14 @@ public class PizzaOrderServiceTest {
                 Pizza.builder()
                         .id(0L)
                         .name("Pizza1")
-                        .price(new BigDecimal(5.10))
+                        .price((5.10))
                         .build()
         );
         pizzaList.add(
                 Pizza.builder()
                         .id(1L)
                         .name("Pizza2")
-                        .price(new BigDecimal(10.53))
+                        .price((10.53))
                         .build()
         );
 

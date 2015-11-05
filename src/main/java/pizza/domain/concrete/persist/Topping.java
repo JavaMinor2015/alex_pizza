@@ -1,8 +1,6 @@
 package pizza.domain.concrete.persist;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +16,8 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Topping implements Serializable {
     private static final long serialVersionUID = -4925807675931819331L;
 
@@ -27,5 +27,5 @@ public class Topping implements Serializable {
 
     private String name;
 
-    private BigDecimal extraPrice;
+    private double extraPrice;
 }

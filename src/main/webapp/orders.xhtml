@@ -13,8 +13,8 @@
 </h:head>
 <h:body>
     <h:form prependId="false">
-        #{orderService.getOrders()}
-        <h:dataTable id="orderTable" value="#{orderService.orders}" var="o" border="1"
+        #{orderService.initOrders()}
+        <h:dataTable id="orderTable" value="#{orderService.getOrders()}" var="o" border="1"
                      style="align-content: center">
             <h:column>
                 <f:facet name="header">
@@ -26,7 +26,7 @@
                 <f:facet name="header">
                     Items
                 </f:facet>
-                <h:dataTable id="orderItems" value="#{o.orderItems}" var="i" border="1">
+                <h:dataTable id="orderItems" value="#{o.getOrderItems()}" var="i" border="1">
                     <h:column>
                         <f:facet name="header">
                             Name

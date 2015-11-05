@@ -2,6 +2,7 @@ package pizza.domain.concrete.persist;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @Entity
+@NoArgsConstructor
 public class OrderItem implements Serializable {
 
     private static final long serialVersionUID = -5850157386425600619L;
@@ -22,7 +24,7 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Pizza pizza;
 
     private int amount;

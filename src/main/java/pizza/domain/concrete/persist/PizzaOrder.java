@@ -1,6 +1,7 @@
 package pizza.domain.concrete.persist;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class PizzaOrder implements Serializable {
 
     private static final long serialVersionUID = 8151307223913811802L;
@@ -23,7 +25,7 @@ public class PizzaOrder implements Serializable {
     private Long id;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     /**

@@ -44,40 +44,40 @@ public class PizzaRepository implements Serializable {
         // magical persistence here
         pizzaList.add(
                 Pizza.builder()
-                        .id(0L)
+                        .id(1L)
                         .name("Margherita")
                         .toppings(
                                 Arrays.asList(
                                         Topping.builder()
                                                 .name("Peperoni")
-                                                .extraPrice(new BigDecimal(1.0))
+                                                .extraPrice(1.0)
                                                 .build()
                                         ,
                                         Topping.builder()
                                                 .name("Onions")
-                                                .extraPrice(new BigDecimal(0.5))
+                                                .extraPrice((0.5))
                                                 .build())
                         )
-                        .price(new BigDecimal(10.0))
+                        .price((10.0))
                         .build()
         );
         pizzaList.add(
                 Pizza.builder()
-                        .id(1L)
+                        .id(2L)
                         .name("Hawaii")
                         .toppings(
                                 Arrays.asList(
                                         Topping.builder()
                                                 .name("Pineapple")
-                                                .extraPrice(new BigDecimal(2.0))
+                                                .extraPrice((2.0))
                                                 .build()
                                         ,
                                         Topping.builder()
                                                 .name("Ham")
-                                                .extraPrice(new BigDecimal(0.33))
+                                                .extraPrice((0.33))
                                                 .build())
                         )
-                        .price(new BigDecimal(10.0))
+                        .price((10.0))
                         .build()
         );
     }

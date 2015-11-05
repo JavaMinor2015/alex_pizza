@@ -66,7 +66,7 @@ public class OrderService implements Serializable {
         pizzaBean.addOrder(pizzaOrder);
     }
 
-    public void getOrders() {
+    public void initOrders() {
         orders = pizzaBean.getOrders();
     }
 }

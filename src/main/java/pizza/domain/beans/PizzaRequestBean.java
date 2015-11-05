@@ -42,6 +42,7 @@ public class PizzaRequestBean implements Serializable {
      */
     public void addOrder(final PizzaOrder pizzaOrder) {
         orderRepository.addItem(stripEmptyOrders(pizzaOrder));
+        orderRepository.save();
     }
 
     /**

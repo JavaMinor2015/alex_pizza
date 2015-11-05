@@ -8,6 +8,7 @@ import pizza.domain.concrete.persist.PizzaOrder;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class OrderRepository implements Serializable {
 
     private static final long serialVersionUID = -3266726493781699451L;
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "PizzaPersist")
     private EntityManager em;
 
     @Getter(AccessLevel.NONE)
@@ -46,13 +47,8 @@ public class OrderRepository implements Serializable {
      * Load state from persistence.
      */
     public void load() {
-        // magical persistence here
-//        Query query = em.createQuery("SELECT o FROM " + PizzaOrder.class.getSimpleName() + " o");
-//        pizzaOrders = (List<PizzaOrder>) query.getResultList();
-        pizzaOrders = new ArrayList<>();
-        pizzaOrders.add(
-                em.find(PizzaOrder.class, 0)
-        );
+        Query query = em.createQuery("SELECT o FROM " + PizzaOrder.class.getSimpleName() + " o");
+        pizzaOrders = (List<PizzaOrder>) query.getResultList();
     }
 
     /**
