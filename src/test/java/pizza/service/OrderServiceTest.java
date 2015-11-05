@@ -18,6 +18,10 @@ import static org.mockito.Mockito.*;
  * Created by alex on 11/4/15.
  */
 public class OrderServiceTest {
+
+    /**
+     * Rule for exception testing.
+     */
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -26,17 +30,20 @@ public class OrderServiceTest {
     PizzaRequestBean mockBean;
     List<Pizza> pizzaList;
 
+    /**
+     * Set it up
+     */
     @Before
-    public void setUp(){
+    public void setUp() {
         order = new Order();
         orderService = new OrderService();
         pizzaList = new ArrayList<>();
         pizzaList.add(
                 Pizza.builder()
-                .id(0)
-                .name("Pizza1")
-                .price(new BigDecimal(5.10))
-                .build()
+                        .id(0)
+                        .name("Pizza1")
+                        .price(new BigDecimal(5.10))
+                        .build()
         );
         pizzaList.add(
                 Pizza.builder()
@@ -53,11 +60,19 @@ public class OrderServiceTest {
         orderService.setPizzaBean(mockBean);
     }
 
+    /**
+     * Testing {@link OrderService#init()}
+     */
     @Test
-    public void testInit(){
+    public void testInit() {
         orderService.init();
     }
 
+    /**
+     * Testing {@link OrderService#order()}
+     *
+     * @throws Exception
+     */
     @Test
     public void testOrderNull() throws Exception {
 
