@@ -32,11 +32,14 @@ public class OrderService implements Serializable {
     private Order order;
 
     @EJB
-    PizzaRequestBean pizzaBean;
+    private PizzaRequestBean pizzaBean;
 
+    /**
+     * Initializes the service after bean injection.
+     */
     @PostConstruct
     public void init() {
-        if(pizzas == null) {
+        if (pizzas == null) {
             pizzas = pizzaBean.getAll();
             order = new Order();
             for (Pizza pizza : pizzas) {
@@ -45,11 +48,17 @@ public class OrderService implements Serializable {
         }
     }
 
+    /**
+     * Finalize an order.
+     * <p>
+     * The order will be added to the bean and persisted.
+     */
     public void order() {
-        orderStatus = "";
+        StringBuilder builder = new StringBuilder();
         for (OrderItem orderItem : order.getOrderItems()) {
-            orderStatus += orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n";
+            builder.append(orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n");
         }
+        orderStatus = builder.toString();
         pizzaBean.addOrder(order);
     }
 }

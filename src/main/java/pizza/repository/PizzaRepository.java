@@ -17,14 +17,29 @@ import java.util.List;
 public class PizzaRepository implements Serializable {
     private List<Pizza> pizzaList = new ArrayList<>();
 
+    /**
+     * Add a pizza to this repository.
+     *
+     * @param pizza the pizza to add
+     */
     public void add(final Pizza pizza) {
         pizzaList.add(pizza);
     }
 
+    /**
+     * Retrieve all pizzas.
+     * <p>
+     * {@link #load()} not called
+     *
+     * @return a list of pizzas
+     */
     public List<Pizza> getAll() {
         return pizzaList;
     }
 
+    /**
+     * Load state from persistence.
+     */
     public void load() {
         // magical persistence here
         pizzaList.add(
@@ -67,6 +82,9 @@ public class PizzaRepository implements Serializable {
         );
     }
 
+    /**
+     * Save state to persistence.
+     */
     public void save() {
         // magical persistence here
     }

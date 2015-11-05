@@ -19,14 +19,25 @@ public class OrderRepository implements Serializable {
 
     private List<Order> orders = new ArrayList<>();
 
+    /**
+     * Add an order to this repository.
+     *
+     * @param order the order to add
+     */
     public void addItem(final Order order) {
         orders.add(order);
     }
 
+    /**
+     * Load state from persistence.
+     */
     public void load(){
         // magical persistence here
     }
 
+    /**
+     * Save state to persistence.
+     */
     public void save(){
         // magical persistence here
     }
