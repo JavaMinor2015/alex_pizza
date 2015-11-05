@@ -1,8 +1,8 @@
 package pizza.domain.beans;
 
-import pizza.domain.concrete.Order;
-import pizza.domain.concrete.OrderItem;
-import pizza.domain.concrete.Pizza;
+import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.domain.concrete.persist.OrderItem;
+import pizza.domain.concrete.persist.Pizza;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
 
@@ -19,10 +19,10 @@ import java.util.List;
 public class PizzaRequestBean implements Serializable {
 
     @Inject
-    private PizzaRepository pizzaRepository;
+    PizzaRepository pizzaRepository;
 
     @Inject
-    private OrderRepository orderRepository;
+    OrderRepository orderRepository;
 
     /**
      * Add a pizza to this bean.
@@ -38,10 +38,10 @@ public class PizzaRequestBean implements Serializable {
      *
      * The order will be added and persisted.
      *
-     * @param order the order to add
+     * @param pizzaOrder the order to add
      */
-    public void addOrder(final Order order) {
-        orderRepository.addItem(stripEmptyOrders(order));
+    public void addOrder(final PizzaOrder pizzaOrder) {
+        orderRepository.addItem(stripEmptyOrders(pizzaOrder));
     }
 
     /**
@@ -54,13 +54,17 @@ public class PizzaRequestBean implements Serializable {
         return pizzaRepository.getAll();
     }
 
-    private Order stripEmptyOrders(final Order order) {
-        Iterator<OrderItem> it = order.getOrderItems().iterator();
+    private PizzaOrder stripEmptyOrders(final PizzaOrder pizzaOrder) {
+        Iterator<OrderItem> it = pizzaOrder.getOrderItems().iterator();
         while(it.hasNext()){
             if(it.next().getAmount() < 1) {
                 it.remove();
             }
         }
-        return order;
+        return pizzaOrder;
+    }
+
+    public List<PizzaOrder> getOrders() {
+        return orderRepository.getPizzaOrders();
     }
 }

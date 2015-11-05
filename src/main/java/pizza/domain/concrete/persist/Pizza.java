@@ -1,10 +1,11 @@
-package pizza.domain.concrete;
+package pizza.domain.concrete.persist;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,9 +16,17 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Entity
 public class Pizza implements Serializable {
-    private int id;
+    private static final long serialVersionUID = -2394835763685701096L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String name;
+
+    @OneToMany
     private List<Topping> toppings;
 
     @Getter(AccessLevel.NONE)

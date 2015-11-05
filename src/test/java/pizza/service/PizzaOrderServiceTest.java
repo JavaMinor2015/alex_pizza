@@ -5,8 +5,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import pizza.domain.beans.PizzaRequestBean;
-import pizza.domain.concrete.Order;
-import pizza.domain.concrete.Pizza;
+import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.domain.concrete.persist.Pizza;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by alex on 11/4/15.
  */
-public class OrderServiceTest {
+public class PizzaOrderServiceTest {
 
     /**
      * Rule for exception testing.
@@ -25,7 +25,7 @@ public class OrderServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    Order order;
+    PizzaOrder pizzaOrder;
     OrderService orderService;
     PizzaRequestBean mockBean;
     List<Pizza> pizzaList;
@@ -35,28 +35,27 @@ public class OrderServiceTest {
      */
     @Before
     public void setUp() {
-        order = new Order();
+        pizzaOrder = new PizzaOrder();
         orderService = new OrderService();
         pizzaList = new ArrayList<>();
         pizzaList.add(
                 Pizza.builder()
-                        .id(0)
+                        .id(0L)
                         .name("Pizza1")
                         .price(new BigDecimal(5.10))
                         .build()
         );
         pizzaList.add(
                 Pizza.builder()
-                        .id(1)
+                        .id(1L)
                         .name("Pizza2")
                         .price(new BigDecimal(10.53))
                         .build()
         );
 
         mockBean = mock(PizzaRequestBean.class);
-        mockBean.addOrder(order);
+        mockBean.addOrder(pizzaOrder);
         when(mockBean.getAll()).thenReturn(pizzaList);
-
         orderService.setPizzaBean(mockBean);
     }
 
@@ -78,8 +77,8 @@ public class OrderServiceTest {
 
         doNothing()
                 .doThrow(NullPointerException.class)
-                .when(mockBean).addOrder(order);
-        orderService.setOrder(order);
+                .when(mockBean).addOrder(pizzaOrder);
+        orderService.setPizzaOrder(pizzaOrder);
         orderService.order();
         thrown.expect(NullPointerException.class);
         orderService.order();

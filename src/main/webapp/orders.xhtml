@@ -13,36 +13,36 @@
 </h:head>
 <h:body>
     <h:form prependId="false">
-        <h:dataTable id="pizzaTable" value="#{orderService.pizzaOrder.orderItems}" var="o" border="1"
+        #{orderService.getOrders()}
+        <h:dataTable id="orderTable" value="#{orderService.orders}" var="o" border="1"
                      style="align-content: center">
             <h:column>
                 <f:facet name="header">
-                    Name
+                    Id
                 </f:facet>
-                <h:outputText value="#{o.pizza.name}"/>
+                <h:outputText value="#{o.id}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    Price
+                    Items
                 </f:facet>
-                <h:outputText value="#{o.pizza.price}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    Amount
-                </f:facet>
-                <h:inputText value="#{o.amount}"
-                             p:type="number"
-                             p:min="0"
-                             p:max="20"/>
+                <h:dataTable id="orderItems" value="#{o.orderItems}" var="i" border="1">
+                    <h:column>
+                        <f:facet name="header">
+                            Name
+                        </f:facet>
+                        <h:outputText value="#{i.pizza.name}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Amount
+                        </f:facet>
+                        <h:outputText value="#{i.amount}" />
+                    </h:column>
+                </h:dataTable>
             </h:column>
         </h:dataTable>
         <br/>
-        <h:commandButton type="submit" value="Order">
-            <f:ajax event="click" listener="#{orderService.order()}" execute="@form" render="result"/>
-        </h:commandButton>
-        <br/>
-        <h:outputText id="result" value="#{orderService.orderStatus}"/>
     </h:form>
 
     <div class="messagecolor">

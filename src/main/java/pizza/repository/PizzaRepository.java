@@ -1,7 +1,7 @@
 package pizza.repository;
 
-import pizza.domain.concrete.Pizza;
-import pizza.domain.concrete.Topping;
+import pizza.domain.concrete.persist.Pizza;
+import pizza.domain.concrete.persist.Topping;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
@@ -44,7 +44,7 @@ public class PizzaRepository implements Serializable {
         // magical persistence here
         pizzaList.add(
                 Pizza.builder()
-                        .id(0)
+                        .id(0L)
                         .name("Margherita")
                         .toppings(
                                 Arrays.asList(
@@ -63,7 +63,7 @@ public class PizzaRepository implements Serializable {
         );
         pizzaList.add(
                 Pizza.builder()
-                        .id(1)
+                        .id(1L)
                         .name("Hawaii")
                         .toppings(
                                 Arrays.asList(
