@@ -1,11 +1,14 @@
 package pizza.repository;
 
+import lombok.Getter;
+import lombok.Setter;
 import pizza.domain.concrete.persist.Pizza;
 import pizza.domain.concrete.persist.Topping;
 
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +18,8 @@ import java.util.List;
  * Created by alex on 11/3/15.
  */
 @Stateful
+@Getter
+@Setter
 public class PizzaRepository implements Serializable {
 
     private static final long serialVersionUID = -8756675831989435083L;
@@ -50,7 +55,24 @@ public class PizzaRepository implements Serializable {
      */
     public void load() {
         // magical persistence here
-        pizzaList.add(
+        // TODO remove when database has pizzas
+        generateDummyData();
+        Query query = em.createQuery("SELECT o FROM " + Pizza.class.getSimpleName() + " o");
+        pizzaList = (List<Pizza>) query.getResultList();
+    }
+
+    /**
+     * Save state to persistence.
+     */
+    public void save() {
+        // magical persistence here
+        pizzaList.forEach(em::persist);
+        em.flush();
+    }
+
+    private void generateDummyData() {
+
+        em.persist(
                 Pizza.builder()
                         .id(1L)
                         .name("Margherita")
@@ -69,7 +91,8 @@ public class PizzaRepository implements Serializable {
                         .price(10.0)
                         .build()
         );
-        pizzaList.add(
+
+        em.persist(
                 Pizza.builder()
                         .id(2L)
                         .name("Hawaii")
@@ -88,12 +111,7 @@ public class PizzaRepository implements Serializable {
                         .price(10.0)
                         .build()
         );
-    }
 
-    /**
-     * Save state to persistence.
-     */
-    public void save() {
-        // magical persistence here
+        em.flush();
     }
 }
