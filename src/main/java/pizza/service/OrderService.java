@@ -47,7 +47,7 @@ public class OrderService implements Serializable {
             pizzas = pizzaBean.getAll();
             pizzaOrder = new PizzaOrder();
             for (Pizza pizza : pizzas) {
-                pizzaOrder.add(new OrderItem(0L, pizza, 0));
+                pizzaOrder.add(new OrderItem(pizza, 0));
             }
         }
     }

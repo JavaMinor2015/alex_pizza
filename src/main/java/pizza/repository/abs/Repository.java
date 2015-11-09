@@ -72,11 +72,8 @@ public abstract class Repository<T> {
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> root = cq.from(clazz);
 
-        cb.equal(root.get("id"), idToFind);
-        cq.select(root);
-
+        cq.where(cb.equal(root.get("id"), idToFind));
         TypedQuery<T> q = em.createQuery(cq);
-        q.setMaxResults(1); // TODO look into why more than one result will be returned otherwise, ID is unique
         return q.getSingleResult();
     }
 }

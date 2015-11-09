@@ -16,12 +16,11 @@ public class PizzaTest {
     @Test
     public void testGetPrice() throws Exception {
         Pizza pizza = new Pizza();
-        pizza.setId(5L);
         pizza.setName("Pizza2");
         pizza.setPrice(5D);
         List<Topping> toppings = new ArrayList<>();
         toppings.add(
-                new Topping(1L, "Topping1", 5D)
+                new Topping("Topping1", 5D)
         );
         pizza.setToppings(
                 toppings

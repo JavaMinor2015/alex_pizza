@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 /**
@@ -14,15 +17,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-@Entity
 @NoArgsConstructor
-public class OrderItem implements Serializable {
+@Entity
+public class OrderItem extends PersistentEntity implements Serializable {
 
     private static final long serialVersionUID = -5850157386425600619L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @OneToOne(cascade = CascadeType.MERGE)
     private Pizza pizza;

@@ -3,8 +3,11 @@ package pizza.domain.concrete.persist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +19,9 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-public class PizzaOrder implements Serializable {
+public class PizzaOrder extends PersistentEntity implements Serializable {
 
     private static final long serialVersionUID = 8151307223913811802L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();

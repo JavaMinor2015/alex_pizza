@@ -42,14 +42,12 @@ public class PizzaOrderServiceTest {
         pizzaList = new ArrayList<>();
         pizzaList.add(
                 Pizza.builder()
-                        .id(0L)
                         .name("Pizza1")
                         .price((5.10))
                         .build()
         );
         pizzaList.add(
                 Pizza.builder()
-                        .id(1L)
                         .name("Pizza2")
                         .price((10.53))
                         .build()

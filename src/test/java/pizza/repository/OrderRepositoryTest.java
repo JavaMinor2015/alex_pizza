@@ -39,8 +39,7 @@ public class OrderRepositoryTest {
         repository = new OrderRepository();
         repository.setEm(mockManager);
         PizzaOrder order = new PizzaOrder();
-        order.setId(123L);
-        order.add(new OrderItem(147L, new Pizza(123L, "Pizza", null, 5D), 2));
+        order.add(new OrderItem(new Pizza("Pizza", null, 5D), 2));
         pizzaOrders.add(order);
 
         when(mockCriteriaBuilder.createQuery(PizzaOrder.class)).thenReturn(mockCriteriaQuery);
@@ -58,7 +57,6 @@ public class OrderRepositoryTest {
     @Test
     public void testAddItem() throws Exception {
         PizzaOrder order = new PizzaOrder();
-        order.setId(987L);
         repository.add(order);
 
         pizzaOrders.add(order);
