@@ -7,7 +7,9 @@ import pizza.domain.concrete.persist.Pizza;
 import pizza.domain.concrete.persist.PizzaOrder;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,51 +25,55 @@ import static org.mockito.Mockito.when;
  */
 public class OrderRepositoryTest {
 
-    private EntityManager mockManager;
-    private Query mockQuery;
+    private TypedQuery<PizzaOrder> mockTypedQuery;
     private List<PizzaOrder> pizzaOrders;
     private OrderRepository repository;
 
     @Before
     public void setUp() {
-        mockManager = mock(EntityManager.class);
-        mockQuery = mock(Query.class);
+        EntityManager mockManager = mock(EntityManager.class);
+        CriteriaQuery<PizzaOrder> mockCriteriaQuery = mock(CriteriaQuery.class);
+        mockTypedQuery = mock(TypedQuery.class);
+        CriteriaBuilder mockCriteriaBuilder = mock(CriteriaBuilder.class);
         pizzaOrders = new ArrayList<>();
         repository = new OrderRepository();
         repository.setEm(mockManager);
-        when(mockManager.createQuery(any(String.class))).thenReturn(mockQuery);
         PizzaOrder order = new PizzaOrder();
         order.setId(123L);
-        order.add(new OrderItem(456L, new Pizza(789L, "Pizza", null, 5D), 2));
+        order.add(new OrderItem(147L, new Pizza(123L, "Pizza", null, 5D), 2));
         pizzaOrders.add(order);
+
+        when(mockCriteriaBuilder.createQuery(PizzaOrder.class)).thenReturn(mockCriteriaQuery);
+        when(mockManager.getCriteriaBuilder()).thenReturn(mockCriteriaBuilder);
+        when(mockManager.createQuery(mockCriteriaQuery)).thenReturn(mockTypedQuery);
     }
 
     @Test
     public void testGetPizzaOrders() throws Exception {
-        when(mockQuery.getResultList()).thenReturn(pizzaOrders);
-        assertThat(repository.getPizzaOrders(), not(nullValue()));
-        assertThat(repository.getPizzaOrders(), is(pizzaOrders));
+        when(mockTypedQuery.getResultList()).thenReturn(pizzaOrders);
+        assertThat(repository.getAll(), not(nullValue()));
+        assertThat(repository.getAll(), is(pizzaOrders));
     }
 
     @Test
     public void testAddItem() throws Exception {
         PizzaOrder order = new PizzaOrder();
         order.setId(987L);
-        repository.addItem(order);
+        repository.add(order);
 
         pizzaOrders.add(order);
-        when(mockQuery.getResultList()).thenReturn(pizzaOrders);
-        assertThat(repository.getPizzaOrders().contains(order), is(true));
-    }
 
-    @Test
-    public void testLoad() throws Exception {
-        when(mockQuery.getResultList()).thenReturn(pizzaOrders);
-        repository.load();
+        when(mockTypedQuery.getResultList()).thenReturn(pizzaOrders);
+        assertThat(repository.getAll().contains(order), is(true));
     }
 
     @Test
     public void testSave() throws Exception {
         repository.save();
+    }
+
+    @Test
+    public void testFindById() throws Exception {
+
     }
 }

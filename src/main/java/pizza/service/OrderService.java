@@ -75,4 +75,8 @@ public class OrderService implements Serializable {
     public void initOrders() {
         orders = pizzaBean.getOrders();
     }
+
+    public Pizza findById(final Long id) {
+        return pizzaBean.findById(id);
+    }
 }

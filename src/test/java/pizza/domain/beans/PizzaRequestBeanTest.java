@@ -41,7 +41,6 @@ public class PizzaRequestBeanTest {
         orderList = new ArrayList<>();
 
         pizzaList.add(Pizza.builder()
-                        .id(0L)
                         .name("Pizza1")
                         .price((5.10))
                         .build()
@@ -62,7 +61,7 @@ public class PizzaRequestBeanTest {
     @Test
     public void testAddOrder() throws Exception {
         pizzaRequestBean.addOrder(new PizzaOrder());
-        when(mockOrderRepo.getPizzaOrders()).thenReturn(new ArrayList<>());
+        when(mockOrderRepo.getAll()).thenReturn(new ArrayList<>());
         assertThat(pizzaRequestBean.getAll(), not(nullValue()));
     }
 }

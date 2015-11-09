@@ -47,7 +47,7 @@ public class PizzaRequestBean implements Serializable {
      * @param pizzaOrder the order to add
      */
     public void addOrder(final PizzaOrder pizzaOrder) {
-        orderRepository.addItem(stripEmptyOrders(pizzaOrder));
+        orderRepository.add(stripEmptyOrders(pizzaOrder));
         orderRepository.save();
     }
 
@@ -71,6 +71,10 @@ public class PizzaRequestBean implements Serializable {
     }
 
     public List<PizzaOrder> getOrders() {
-        return orderRepository.getPizzaOrders();
+        return orderRepository.getAll();
+    }
+
+    public Pizza findById(final Long id) {
+        return pizzaRepository.findById(id);
     }
 }
