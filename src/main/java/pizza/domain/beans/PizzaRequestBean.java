@@ -57,7 +57,6 @@ public class PizzaRequestBean implements Serializable {
      * @return all known pizza's
      */
     public List<Pizza> getAll() {
-        pizzaRepository.load();
         return pizzaRepository.getAll();
     }
 
