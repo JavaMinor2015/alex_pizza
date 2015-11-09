@@ -1,8 +1,10 @@
 package pizza.domain.beans;
 
-import pizza.domain.concrete.Order;
-import pizza.domain.concrete.OrderItem;
-import pizza.domain.concrete.Pizza;
+import lombok.Getter;
+import lombok.Setter;
+import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.domain.concrete.persist.OrderItem;
+import pizza.domain.concrete.persist.Pizza;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
 
@@ -16,13 +18,17 @@ import java.util.List;
  * Created by alex on 11/3/15.
  */
 @Stateful
+@Getter
+@Setter
 public class PizzaRequestBean implements Serializable {
 
-    @Inject
-    private PizzaRepository pizzaRepository;
+    private static final long serialVersionUID = -4540135125666933872L;
 
     @Inject
-    private OrderRepository orderRepository;
+    PizzaRepository pizzaRepository;
+
+    @Inject
+    OrderRepository orderRepository;
 
     /**
      * Add a pizza to this bean.
@@ -38,10 +44,11 @@ public class PizzaRequestBean implements Serializable {
      *
      * The order will be added and persisted.
      *
-     * @param order the order to add
+     * @param pizzaOrder the order to add
      */
-    public void addOrder(final Order order) {
-        orderRepository.addItem(stripEmptyOrders(order));
+    public void addOrder(final PizzaOrder pizzaOrder) {
+        orderRepository.addItem(stripEmptyOrders(pizzaOrder));
+        orderRepository.save();
     }
 
     /**
@@ -50,17 +57,20 @@ public class PizzaRequestBean implements Serializable {
      * @return all known pizza's
      */
     public List<Pizza> getAll() {
-        pizzaRepository.load();
         return pizzaRepository.getAll();
     }
 
-    private Order stripEmptyOrders(final Order order) {
-        Iterator<OrderItem> it = order.getOrderItems().iterator();
+    private PizzaOrder stripEmptyOrders(final PizzaOrder pizzaOrder) {
+        Iterator<OrderItem> it = pizzaOrder.getOrderItems().iterator();
         while(it.hasNext()){
             if(it.next().getAmount() < 1) {
                 it.remove();
             }
         }
-        return order;
+        return pizzaOrder;
+    }
+
+    public List<PizzaOrder> getOrders() {
+        return orderRepository.getPizzaOrders();
     }
 }

@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import pizza.domain.concrete.Order;
-import pizza.domain.concrete.OrderItem;
-import pizza.domain.concrete.Pizza;
 import pizza.domain.beans.PizzaRequestBean;
+import pizza.domain.concrete.persist.OrderItem;
+import pizza.domain.concrete.persist.Pizza;
+import pizza.domain.concrete.persist.PizzaOrder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -20,16 +20,20 @@ import java.util.List;
  * Created by alex on 11/3/15.
  */
 @Named("orderService")
-@SessionScoped
+@RequestScoped
 @Getter
 @Setter
 public class OrderService implements Serializable {
+
+    private static final long serialVersionUID = -9167173232808280905L;
 
     private static final Logger LOGGER = LogManager.getLogger(OrderService.class.getName());
 
     private String orderStatus;
     private List<Pizza> pizzas;
-    private Order order;
+    private PizzaOrder pizzaOrder;
+
+    private List<PizzaOrder> orders;
 
     @EJB
     private PizzaRequestBean pizzaBean;
@@ -41,9 +45,9 @@ public class OrderService implements Serializable {
     public void init() {
         if (pizzas == null) {
             pizzas = pizzaBean.getAll();
-            order = new Order();
+            pizzaOrder = new PizzaOrder();
             for (Pizza pizza : pizzas) {
-                order.add(new OrderItem(pizza, 0));
+                pizzaOrder.add(new OrderItem(0L, pizza, 0));
             }
         }
     }
@@ -55,10 +59,20 @@ public class OrderService implements Serializable {
      */
     public void order() {
         StringBuilder builder = new StringBuilder();
-        for (OrderItem orderItem : order.getOrderItems()) {
-            builder.append(orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n");
+        for (OrderItem orderItem : pizzaOrder.getOrderItems()) {
+            builder.append(orderItem.getPizza().getName())
+                    .append(" @ ")
+                    .append(orderItem.getAmount())
+                    .append(" \n");
         }
         orderStatus = builder.toString();
-        pizzaBean.addOrder(order);
+        pizzaBean.addOrder(pizzaOrder);
+    }
+
+    /**
+     * Initialize the orders.
+     */
+    public void initOrders() {
+        orders = pizzaBean.getOrders();
     }
 }

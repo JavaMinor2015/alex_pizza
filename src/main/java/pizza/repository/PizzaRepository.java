@@ -1,20 +1,30 @@
 package pizza.repository;
 
-import pizza.domain.concrete.Pizza;
-import pizza.domain.concrete.Topping;
+import lombok.Getter;
+import lombok.Setter;
+import pizza.domain.concrete.persist.Pizza;
 
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by alex on 11/3/15.
  */
 @Stateful
+@Getter
+@Setter
 public class PizzaRepository implements Serializable {
+
+    private static final long serialVersionUID = -8756675831989435083L;
+
+    @PersistenceContext(unitName = "PizzaPersist")
+    private EntityManager em;
+
     private List<Pizza> pizzaList = new ArrayList<>();
 
     /**
@@ -34,6 +44,7 @@ public class PizzaRepository implements Serializable {
      * @return a list of pizzas
      */
     public List<Pizza> getAll() {
+        load();
         return pizzaList;
     }
 
@@ -41,51 +52,17 @@ public class PizzaRepository implements Serializable {
      * Load state from persistence.
      */
     public void load() {
-        // magical persistence here
-        pizzaList.add(
-                Pizza.builder()
-                        .id(0)
-                        .name("Margherita")
-                        .toppings(
-                                Arrays.asList(
-                                        Topping.builder()
-                                                .name("Peperoni")
-                                                .extraPrice(new BigDecimal(1.0))
-                                                .build()
-                                        ,
-                                        Topping.builder()
-                                                .name("Onions")
-                                                .extraPrice(new BigDecimal(0.5))
-                                                .build())
-                        )
-                        .price(new BigDecimal(10.0))
-                        .build()
-        );
-        pizzaList.add(
-                Pizza.builder()
-                        .id(1)
-                        .name("Hawaii")
-                        .toppings(
-                                Arrays.asList(
-                                        Topping.builder()
-                                                .name("Pineapple")
-                                                .extraPrice(new BigDecimal(2.0))
-                                                .build()
-                                        ,
-                                        Topping.builder()
-                                                .name("Ham")
-                                                .extraPrice(new BigDecimal(0.33))
-                                                .build())
-                        )
-                        .price(new BigDecimal(10.0))
-                        .build()
-        );
+        Query query = em.createQuery("SELECT o FROM " + Pizza.class.getSimpleName() + " o");
+        pizzaList = (List<Pizza>) query.getResultList();
     }
 
     /**
      * Save state to persistence.
      */
     public void save() {
-        // magical persistence here
+        pizzaList.forEach(em::persist);
+        em.flush();
     }
+
+
 }

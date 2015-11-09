@@ -1,10 +1,14 @@
 package pizza.repository;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import pizza.domain.concrete.Order;
+import pizza.domain.concrete.persist.PizzaOrder;
 
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,28 +21,41 @@ import java.util.List;
 @Setter
 public class OrderRepository implements Serializable {
 
-    private List<Order> orders = new ArrayList<>();
+    private static final long serialVersionUID = -3266726493781699451L;
+
+    @PersistenceContext(unitName = "PizzaPersist")
+    private EntityManager em;
+
+    @Getter(AccessLevel.NONE)
+    private List<PizzaOrder> pizzaOrders = new ArrayList<>();
+
+    public List<PizzaOrder> getPizzaOrders() {
+        load();
+        return pizzaOrders;
+    }
 
     /**
      * Add an order to this repository.
      *
-     * @param order the order to add
+     * @param pizzaOrder the order to add
      */
-    public void addItem(final Order order) {
-        orders.add(order);
+    public void addItem(final PizzaOrder pizzaOrder) {
+        pizzaOrders.add(pizzaOrder);
     }
 
     /**
      * Load state from persistence.
      */
-    public void load(){
-        // magical persistence here
+    public void load() {
+        Query query = em.createQuery("SELECT o FROM " + PizzaOrder.class.getSimpleName() + " o");
+        pizzaOrders = (List<PizzaOrder>) query.getResultList();
     }
 
     /**
      * Save state to persistence.
      */
-    public void save(){
-        // magical persistence here
+    public void save() {
+        pizzaOrders.forEach(em::persist);
+        em.flush();
     }
 }
