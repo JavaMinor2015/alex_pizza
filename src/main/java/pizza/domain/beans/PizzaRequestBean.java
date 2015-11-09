@@ -1,5 +1,7 @@
 package pizza.domain.beans;
 
+import lombok.Getter;
+import lombok.Setter;
 import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
@@ -16,7 +18,11 @@ import java.util.List;
  * Created by alex on 11/3/15.
  */
 @Stateful
+@Getter
+@Setter
 public class PizzaRequestBean implements Serializable {
+
+    private static final long serialVersionUID = -4540135125666933872L;
 
     @Inject
     PizzaRepository pizzaRepository;

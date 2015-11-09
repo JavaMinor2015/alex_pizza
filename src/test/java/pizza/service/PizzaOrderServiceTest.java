@@ -5,13 +5,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import pizza.domain.beans.PizzaRequestBean;
-import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.domain.concrete.persist.Pizza;
+import pizza.domain.concrete.persist.PizzaOrder;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -65,6 +67,14 @@ public class PizzaOrderServiceTest {
     @Test
     public void testInit() {
         orderService.init();
+        assertThat(orderService.getPizzas(), not(nullValue()));
+        assertThat(orderService.getPizzaOrder(), not(nullValue()));
+    }
+
+    @Test
+    public void testInitOrders() {
+        orderService.initOrders();
+        assertThat(orderService.getOrders(), not(nullValue()));
     }
 
     /**
@@ -80,9 +90,8 @@ public class PizzaOrderServiceTest {
                 .when(mockBean).addOrder(pizzaOrder);
         orderService.setPizzaOrder(pizzaOrder);
         orderService.order();
+        assertThat(orderService.getOrderStatus(), not(nullValue()));
         thrown.expect(NullPointerException.class);
         orderService.order();
     }
-
-
 }

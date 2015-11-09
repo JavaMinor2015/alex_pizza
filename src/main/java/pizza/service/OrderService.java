@@ -60,12 +60,18 @@ public class OrderService implements Serializable {
     public void order() {
         StringBuilder builder = new StringBuilder();
         for (OrderItem orderItem : pizzaOrder.getOrderItems()) {
-            builder.append(orderItem.getPizza().getName() + " @ " + orderItem.getAmount() + " \n");
+            builder.append(orderItem.getPizza().getName())
+                    .append(" @ ")
+                    .append(orderItem.getAmount())
+                    .append(" \n");
         }
         orderStatus = builder.toString();
         pizzaBean.addOrder(pizzaOrder);
     }
 
+    /**
+     * Initialize the orders.
+     */
     public void initOrders() {
         orders = pizzaBean.getOrders();
     }
