@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.domain.beans.PizzaRequestBean;
 import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
-import pizza.domain.beans.PizzaRequestBean;
+import pizza.domain.concrete.persist.PizzaOrder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * Created by alex on 11/3/15.
  */
 @Named("orderService")
-@SessionScoped
+@RequestScoped
 @Getter
 @Setter
 public class OrderService implements Serializable {
