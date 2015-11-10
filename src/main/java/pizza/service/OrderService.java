@@ -76,6 +76,12 @@ public class OrderService implements Serializable {
         orders = pizzaBean.getOrders();
     }
 
+    /**
+     * Find a pizza by its id.
+     *
+     * @param id the id to search for
+     * @return the corresponding pizza or null
+     */
     public Pizza findById(final Long id) {
         return pizzaBean.findById(id);
     }

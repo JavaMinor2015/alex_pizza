@@ -19,6 +19,12 @@ public class PizzaRepository extends Repository<Pizza> implements Serializable {
 
     private static final long serialVersionUID = -8756675831989435083L;
 
+    /**
+     * Find a pizza by its id.
+     *
+     * @param id the id to search for
+     * @return the corresponding pizza or null
+     */
     public Pizza findById(final Long id) {
         return super.findById(Pizza.class, id);
     }

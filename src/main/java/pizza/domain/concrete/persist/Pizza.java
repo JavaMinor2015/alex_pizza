@@ -5,6 +5,7 @@ import pizza.domain.concrete.persist.abs.PersistentEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Pizza extends PersistentEntity implements Serializable {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Topping> toppings;
 
     @Getter(AccessLevel.NONE)

@@ -70,10 +70,21 @@ public class PizzaRequestBean implements Serializable {
         return pizzaOrder;
     }
 
+    /**
+     * Get all orders.
+     *
+     * @return all orders or an empty list
+     */
     public List<PizzaOrder> getOrders() {
         return orderRepository.getAll();
     }
 
+    /**
+     * Find a pizza by its id.
+     *
+     * @param id the id to search for
+     * @return the corresponding pizza or null
+     */
     public Pizza findById(final Long id) {
         return pizzaRepository.findById(id);
     }

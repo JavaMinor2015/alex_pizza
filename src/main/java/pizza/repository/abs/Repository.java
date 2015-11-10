@@ -3,6 +3,7 @@ package pizza.repository.abs;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,10 +16,14 @@ import java.util.List;
 
 /**
  * Created by alex on 11/9/15.
+ * <p>
+ * An abstract repository which manages PersistentEntity's.
+ *
+ * @param <T> the generic type.
  */
 @Getter
 @Setter
-public abstract class Repository<T> {
+public abstract class Repository<T extends PersistentEntity> {
 
     @PersistenceContext(unitName = "PizzaPersist")
     private EntityManager em;
@@ -67,6 +72,13 @@ public abstract class Repository<T> {
         return response;
     }
 
+    /**
+     * Find an item by its id attribute.
+     *
+     * @param clazz    the item's class.
+     * @param idToFind the id to find
+     * @return the item, or null
+     */
     protected T findById(final Class<T> clazz, final Long idToFind) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(clazz);

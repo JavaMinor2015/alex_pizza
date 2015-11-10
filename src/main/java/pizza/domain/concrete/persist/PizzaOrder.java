@@ -7,6 +7,7 @@ import pizza.domain.concrete.persist.abs.PersistentEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class PizzaOrder extends PersistentEntity implements Serializable {
 
     private static final long serialVersionUID = 8151307223913811802L;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     /**
