@@ -1,6 +1,8 @@
 package pizza.domain.concrete.persist;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import pizza.domain.concrete.persist.abs.PersistentEntity;
@@ -14,6 +16,8 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address extends PersistentEntity implements Serializable {
     private static final long serialVersionUID = 2987205388891445593L;
 
