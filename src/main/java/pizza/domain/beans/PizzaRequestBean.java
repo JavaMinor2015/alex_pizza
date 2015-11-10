@@ -2,9 +2,11 @@ package pizza.domain.beans;
 
 import lombok.Getter;
 import lombok.Setter;
+import pizza.domain.concrete.persist.Delivery;
 import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
+import pizza.repository.DeliveryRepository;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
 
@@ -30,6 +32,9 @@ public class PizzaRequestBean implements Serializable {
     @Inject
     OrderRepository orderRepository;
 
+    @Inject
+    DeliveryRepository deliveryRepository;
+
     /**
      * Add a pizza to this bean.
      *
@@ -41,7 +46,7 @@ public class PizzaRequestBean implements Serializable {
 
     /**
      * Add an order to this bean.
-     *
+     * <p>
      * The order will be added and persisted.
      *
      * @param pizzaOrder the order to add
@@ -49,6 +54,9 @@ public class PizzaRequestBean implements Serializable {
     public void addOrder(final PizzaOrder pizzaOrder) {
         orderRepository.add(stripEmptyOrders(pizzaOrder));
         orderRepository.save();
+        Delivery delivery = deliveryRepository.createDeliveryForOrder(pizzaOrder);
+        deliveryRepository.add(delivery);
+        deliveryRepository.save();
     }
 
     /**
@@ -62,8 +70,8 @@ public class PizzaRequestBean implements Serializable {
 
     private PizzaOrder stripEmptyOrders(final PizzaOrder pizzaOrder) {
         Iterator<OrderItem> it = pizzaOrder.getOrderItems().iterator();
-        while(it.hasNext()){
-            if(it.next().getAmount() < 1) {
+        while (it.hasNext()) {
+            if (it.next().getAmount() < 1) {
                 it.remove();
             }
         }
@@ -87,5 +95,14 @@ public class PizzaRequestBean implements Serializable {
      */
     public Pizza findById(final Long id) {
         return pizzaRepository.findById(id);
+    }
+
+    /**
+     * Retrieves all deliveries.
+     *
+     * @return a list of deliveries or an empty list.
+     */
+    public List<Delivery> getDeliveries() {
+        return deliveryRepository.getAll();
     }
 }

@@ -18,51 +18,37 @@
         </ui:insert>
     </div>
     <h:form prependId="false">
-        #{orderService.initOrders()}
-        <h:dataTable id="orderTable" value="#{orderService.getOrders()}" var="o" border="1"
+        <h:dataTable id="pizzaTable" value="#{orderService.pizzaOrder.orderItems}" var="o" border="1"
                      style="align-content: center">
             <h:column>
                 <f:facet name="header">
-                    Id
+                    Name
                 </f:facet>
-                <h:outputText value="#{o.getId()}"/>
+                <h:outputText value="#{o.pizza.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    Items
+                    Price
                 </f:facet>
-                <h:dataTable id="orderItems" value="#{o.getOrderItems()}" var="i" border="1">
-                    <h:column>
-                        <f:facet name="header">
-                            Name
-                        </f:facet>
-                        <h:outputText value="#{i.pizza.name}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            Amount
-                        </f:facet>
-                        <h:outputText value="#{i.amount}"/>
-                    </h:column>
-                </h:dataTable>
+                <h:outputText value="#{o.pizza.price}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
-                    Address
+                    Amount
                 </f:facet>
-                <h:outputText value="#{o.address.streetName}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    Order Time
-                </f:facet>
-                <h:outputText value="#{o.orderTime.time}">
-                    <f:convertDateTime pattern="hh:mm - d-MM-YYYY"/>
-                </h:outputText>
+                <h:inputText value="#{o.amount}"
+                             p:type="number"
+                             p:min="0"
+                             p:max="20"/>
             </h:column>
         </h:dataTable>
+        <h:inputText value="#{orderService.pizzaOrder.address.streetName}"/>
         <br/>
-        #{orderService.findById(1).name}
+        <h:commandButton type="submit" value="Order">
+            <f:ajax event="click" listener="#{orderService.order()}" execute="@form" render="result"/>
+        </h:commandButton>
+        <br/>
+        <h:outputText id="result" value="#{orderService.orderStatus}"/>
     </h:form>
 
     <div class="messagecolor">

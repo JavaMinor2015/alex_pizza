@@ -19,30 +19,57 @@
     </div>
     <h:form prependId="false">
         #{orderService.initOrders()}
-        <h:dataTable id="orderTable" value="#{orderService.getOrders()}" var="o" border="1"
+        <h:dataTable id="orderTable" value="#{orderService.getDeliveries()}" var="d" border="1"
                      style="align-content: center">
             <h:column>
                 <f:facet name="header">
-                    Id
+                    Status
                 </f:facet>
-                <h:outputText value="#{o.getId()}"/>
+                <h:outputText value="#{d.status}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     Items
                 </f:facet>
-                <h:dataTable id="orderItems" value="#{o.getOrderItems()}" var="i" border="1">
+                <h:dataTable id="orders" value="#{d.getOrders()}" var="o" border="1">
                     <h:column>
                         <f:facet name="header">
-                            Name
+                            Id
                         </f:facet>
-                        <h:outputText value="#{i.pizza.name}"/>
+                        <h:outputText value="#{o.getId()}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">
-                            Amount
+                            Items
                         </f:facet>
-                        <h:outputText value="#{i.amount}"/>
+                        <h:dataTable id="orderItems" value="#{o.getOrderItems()}" var="i" border="1">
+                            <h:column>
+                                <f:facet name="header">
+                                    Name
+                                </f:facet>
+                                <h:outputText value="#{i.pizza.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    Amount
+                                </f:facet>
+                                <h:outputText value="#{i.amount}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Address
+                        </f:facet>
+                        <h:outputText value="#{o.address.streetName}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Order Time
+                        </f:facet>
+                        <h:outputText value="#{o.orderTime.time}">
+                            <f:convertDateTime pattern="hh:mm - d-MM-YYYY"/>
+                        </h:outputText>
                     </h:column>
                 </h:dataTable>
             </h:column>

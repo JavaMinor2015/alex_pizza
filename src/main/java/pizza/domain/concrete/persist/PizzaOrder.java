@@ -5,12 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pizza.domain.concrete.persist.abs.PersistentEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -26,6 +24,12 @@ public class PizzaOrder extends PersistentEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar orderTime;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Address address;
 
     /**
      * Add an order item to this order.
