@@ -1,8 +1,11 @@
 package pizza.domain.concrete.persist;
 
 import lombok.*;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,12 +18,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pizza implements Serializable {
+public class Pizza extends PersistentEntity implements Serializable {
     private static final long serialVersionUID = -2394835763685701096L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     private String name;
 
