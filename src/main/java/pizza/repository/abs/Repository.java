@@ -84,7 +84,9 @@ public abstract class Repository<T extends PersistentEntity> {
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> root = cq.from(clazz);
 
-        cq.where(cb.equal(root.get("id"), idToFind));
+        cq.where(
+                cb.equal(root.get("id"), idToFind)
+        );
         TypedQuery<T> q = em.createQuery(cq);
         return q.getSingleResult();
     }

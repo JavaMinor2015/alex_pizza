@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import pizza.domain.concrete.persist.Delivery;
+import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
 import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.repository.DeliveryRepository;
@@ -36,6 +37,7 @@ public class PizzaRequestBeanTest {
     private DeliveryRepository mockDeliveryRepo;
     private List<Pizza> pizzaList;
     private List<PizzaOrder> orderList;
+    private List<Delivery> deliveryList;
 
     @Before
     public void setUp() {
@@ -43,14 +45,20 @@ public class PizzaRequestBeanTest {
         mockOrderRepo = mock(OrderRepository.class);
         mockDeliveryRepo = mock(DeliveryRepository.class);
         pizzaList = new ArrayList<>();
+        deliveryList = new ArrayList<>();
         orderList = new ArrayList<>();
 
+        deliveryList.add(new Delivery());
         pizzaList.add(Pizza.builder()
                         .name("Pizza1")
                         .price((5.10))
                         .build()
         );
         orderList.add(new PizzaOrder());
+        orderList.get(0).setOrderItems(new ArrayList<>());
+        orderList.get(0).getOrderItems().add(new OrderItem());
+        orderList.get(0).getOrderItems().get(0).setAmount(0);
+        orderList.get(0).getOrderItems().get(0).setPizza(pizzaList.get(0));
         pizzaRequestBean = new PizzaRequestBean();
         pizzaRequestBean.setOrderRepository(mockOrderRepo);
         pizzaRequestBean.setPizzaRepository(mockPizzaRepo);
@@ -67,8 +75,26 @@ public class PizzaRequestBeanTest {
     @Test
     public void testAddOrder() throws Exception {
         when(mockDeliveryRepo.createDeliveryForOrder(any(PizzaOrder.class))).thenReturn(new Delivery());
-        pizzaRequestBean.addOrder(new PizzaOrder());
+        pizzaRequestBean.addOrder(orderList.get(0));
         when(mockOrderRepo.getAll()).thenReturn(new ArrayList<>());
         assertThat(pizzaRequestBean.getAll(), not(nullValue()));
+    }
+
+    @Test
+    public void testGetOrders() throws Exception {
+        when(mockOrderRepo.getAll()).thenReturn(orderList);
+        assertThat(pizzaRequestBean.getOrders(), is(orderList));
+    }
+
+    @Test
+    public void testGetDeliveries() throws Exception {
+        when(mockDeliveryRepo.getAll()).thenReturn(deliveryList);
+        assertThat(pizzaRequestBean.getDeliveries(), is(deliveryList));
+    }
+
+    @Test
+    public void testFindById() throws Exception {
+        when(mockPizzaRepo.findById(5L)).thenReturn(pizzaList.get(0));
+        assertThat(pizzaRequestBean.findById(5L), is(pizzaList.get(0)));
     }
 }

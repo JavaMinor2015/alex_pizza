@@ -9,6 +9,5 @@ public class BusinessRules {
     public static final int DRIVING_TIME_MIN = 20;
 
     private BusinessRules() {
-
     }
 }

@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import pizza.domain.beans.PizzaRequestBean;
+import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
 import pizza.domain.concrete.persist.PizzaOrder;
 
@@ -38,6 +39,7 @@ public class PizzaOrderServiceTest {
     @Before
     public void setUp() {
         pizzaOrder = new PizzaOrder();
+        pizzaOrder.add(new OrderItem());
         orderService = new OrderService();
         pizzaList = new ArrayList<>();
         pizzaList.add(
@@ -52,7 +54,8 @@ public class PizzaOrderServiceTest {
                         .price((10.53))
                         .build()
         );
-
+        pizzaOrder.getOrderItems().get(0).setAmount(5);
+        pizzaOrder.getOrderItems().get(0).setPizza(pizzaList.get(0));
         mockBean = mock(PizzaRequestBean.class);
         mockBean.addOrder(pizzaOrder);
         when(mockBean.getAll()).thenReturn(pizzaList);

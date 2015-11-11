@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 public class OrderRepositoryTest {
 
     private TypedQuery<PizzaOrder> mockTypedQuery;
+    private Root<PizzaOrder> mockRoot;
     private List<PizzaOrder> pizzaOrders;
     private OrderRepository repository;
 
@@ -34,17 +36,20 @@ public class OrderRepositoryTest {
         EntityManager mockManager = mock(EntityManager.class);
         CriteriaQuery<PizzaOrder> mockCriteriaQuery = mock(CriteriaQuery.class);
         mockTypedQuery = mock(TypedQuery.class);
+        mockRoot = mock(Root.class);
         CriteriaBuilder mockCriteriaBuilder = mock(CriteriaBuilder.class);
         pizzaOrders = new ArrayList<>();
         repository = new OrderRepository();
         repository.setEm(mockManager);
         PizzaOrder order = new PizzaOrder();
         order.add(new OrderItem(new Pizza("Pizza", null, 5D), 2));
+        order.setId(123L);
         pizzaOrders.add(order);
 
         when(mockCriteriaBuilder.createQuery(PizzaOrder.class)).thenReturn(mockCriteriaQuery);
         when(mockManager.getCriteriaBuilder()).thenReturn(mockCriteriaBuilder);
         when(mockManager.createQuery(mockCriteriaQuery)).thenReturn(mockTypedQuery);
+        when(mockCriteriaQuery.from(PizzaOrder.class)).thenReturn(mockRoot);
     }
 
     @Test
@@ -72,6 +77,7 @@ public class OrderRepositoryTest {
 
     @Test
     public void testFindById() throws Exception {
-
+        when(mockTypedQuery.getSingleResult()).thenReturn(pizzaOrders.get(0));
+        assertThat(repository.findById(123L), is(pizzaOrders.get(0)));
     }
 }

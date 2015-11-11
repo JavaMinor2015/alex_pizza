@@ -5,9 +5,14 @@ import org.junit.Test;
 import pizza.domain.concrete.persist.Address;
 import pizza.domain.concrete.persist.Delivery;
 import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.rules.BusinessRules;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -35,6 +40,10 @@ public class DeliveryRepositoryTest {
     private Address testAddress;
 
     private DeliveryRepository deliveryRepository;
+    private CriteriaBuilder mockBuilder;
+    private CriteriaQuery<Delivery> mockCriteriaQuery;
+    private TypedQuery mockTypedQuery;
+    private Root<Delivery> mockRoot;
 
     @Before
     public void setUp() {
@@ -53,9 +62,14 @@ public class DeliveryRepositoryTest {
 
         Calendar withinRange = Calendar.getInstance();
         withinRange.setTime(testOrder.getOrderTime().getTime());
-        withinRange.add(Calendar.MINUTE, 50);
+        withinRange.add(Calendar.MINUTE, BusinessRules.MAX_DELIVERY_WAIT_MIN - 10);
         Calendar outsideRange = Calendar.getInstance();
-        outsideRange.add(Calendar.MINUTE, -40);
+        outsideRange.add(Calendar.MINUTE,
+                BusinessRules.MAX_DELIVERY_WAIT_MIN
+                        - BusinessRules.BAKE_TIME_MIN
+                        - BusinessRules.DRIVING_TIME_MIN
+                        - 100
+        );
 
         existingDeliveryWithinTimeRange = Delivery.builder()
                 .status(Delivery.Status.ASSIGNED)
@@ -87,19 +101,32 @@ public class DeliveryRepositoryTest {
 
         deliveryList = new ArrayList<>();
         deliveryList.add(existingDeliveryWithinTimeRange);
+        deliveryList.add(existingDeliveryWithinTimeRange2);
         deliveryList.add(existingDeliveryOutsideTimeRange);
 
 
         mockManager = mock(EntityManager.class);
         mockQuery = mock(Query.class);
+        mockBuilder = mock(CriteriaBuilder.class);
+        mockCriteriaQuery = mock(CriteriaQuery.class);
+        mockTypedQuery = mock(TypedQuery.class);
         deliveryRepository = new DeliveryRepository();
         deliveryRepository.setEm(mockManager);
+
+        when(mockManager.getCriteriaBuilder()).thenReturn(mockBuilder);
+        when(mockBuilder.createQuery(Delivery.class)).thenReturn(mockCriteriaQuery);
+        when(mockCriteriaQuery.from(Delivery.class)).thenReturn(mockRoot);
+        when(mockManager.createQuery(mockCriteriaQuery)).thenReturn(mockTypedQuery);
+        when(mockTypedQuery.getResultList()).thenReturn(deliveryList);
     }
 
     @Test
     public void testCreateDeliveryForOrder() throws Exception {
         when(mockQuery.getResultList()).thenReturn(deliveryList);
         when(mockManager.createNamedQuery(Delivery.FIND_DELIVERY_FOR_STREET)).thenReturn(mockQuery);
+
+        // make sure the three deliveries are in the repo
+        assertThat(deliveryRepository.getAll().size(), is(3));
 
         // test with an order that should end up in existingDeliveryWithinTimeRange
         // since it's one of two within time range and has the least amount of
@@ -115,6 +142,5 @@ public class DeliveryRepositoryTest {
         assertThat(result, is(not(existingDeliveryWithinTimeRange)));
         assertThat(result, is(not(existingDeliveryWithinTimeRange2)));
         assertThat(result, is(not(existingDeliveryOutsideTimeRange)));
-
     }
 }
