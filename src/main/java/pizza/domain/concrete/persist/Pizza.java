@@ -3,10 +3,7 @@ package pizza.domain.concrete.persist;
 import lombok.*;
 import pizza.domain.concrete.persist.abs.PersistentEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,8 +21,11 @@ public class Pizza extends PersistentEntity implements Serializable {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Topping> toppings;
+    private long amountSoldTotal;
+    private long amountSold;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Ingredient> ingredients;
 
     @Getter(AccessLevel.NONE)
     private double price;
@@ -33,8 +33,8 @@ public class Pizza extends PersistentEntity implements Serializable {
     public double getPrice() {
         double total = price;
 
-        for (Topping topping : toppings) {
-            total += topping.getExtraPrice();
+        for (Ingredient ingredient : ingredients) {
+            total += ingredient.getExtraPrice();
         }
 
         return total;

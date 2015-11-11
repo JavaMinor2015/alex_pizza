@@ -1,7 +1,7 @@
 package pizza.domain.beans;
 
 import pizza.domain.concrete.persist.Pizza;
-import pizza.domain.concrete.persist.Topping;
+import pizza.domain.concrete.persist.Ingredient;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -29,20 +29,39 @@ public class ConfigBean {
     }
 
     private void generateDummyData() {
+        Ingredient peperoni = Ingredient.builder()
+                .name("Peperoni")
+                .amount(100)
+                .measurementType(Ingredient.MeasurementType.GRAM)
+                .extraPrice(1.0)
+                .build();
+        Ingredient sauce = Ingredient.builder()
+                .name("Tomato Sauce")
+                .amount(200)
+                .measurementType(Ingredient.MeasurementType.MILLILITER)
+                .extraPrice(0.5)
+                .build();
+        Ingredient pineapple = Ingredient.builder()
+                .name("Pineapple")
+                .amount(50)
+                .measurementType(Ingredient.MeasurementType.GRAM)
+                .extraPrice(2.0)
+                .build();
+        Ingredient ham = Ingredient.builder()
+                .name("Ham")
+                .amount(10)
+                .measurementType(Ingredient.MeasurementType.GRAM)
+                .extraPrice(0.33)
+                .build();
+
         em.persist(
                 Pizza.builder()
                         .name("Margherita")
-                        .toppings(
+                        .ingredients(
                                 Arrays.asList(
-                                        Topping.builder()
-                                                .name("Peperoni")
-                                                .extraPrice(1.0)
-                                                .build()
-                                        ,
-                                        Topping.builder()
-                                                .name("Onions")
-                                                .extraPrice(0.5)
-                                                .build())
+                                        peperoni,
+                                        sauce
+                                )
                         )
                         .price(10.0)
                         .build()
@@ -51,17 +70,12 @@ public class ConfigBean {
         em.persist(
                 Pizza.builder()
                         .name("Hawaii")
-                        .toppings(
+                        .ingredients(
                                 Arrays.asList(
-                                        Topping.builder()
-                                                .name("Pineapple")
-                                                .extraPrice(2.0)
-                                                .build()
-                                        ,
-                                        Topping.builder()
-                                                .name("Ham")
-                                                .extraPrice(0.33)
-                                                .build())
+                                        pineapple,
+                                        ham,
+                                        sauce
+                                )
                         )
                         .price(10.0)
                         .build()

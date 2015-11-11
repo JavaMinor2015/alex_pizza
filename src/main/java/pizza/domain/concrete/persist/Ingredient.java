@@ -15,10 +15,18 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Topping extends PersistentEntity implements Serializable {
+public class Ingredient extends PersistentEntity implements Serializable {
     private static final long serialVersionUID = -4925807675931819331L;
 
     private String name;
-
+    private double amount;
+    private MeasurementType measurementType;
     private double extraPrice;
+
+    public enum MeasurementType {
+        KILOGRAM,
+        GRAM,
+        LITER,
+        MILLILITER;
+    }
 }

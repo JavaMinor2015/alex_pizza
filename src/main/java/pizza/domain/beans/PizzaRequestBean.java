@@ -54,9 +54,21 @@ public class PizzaRequestBean implements Serializable {
     public void addOrder(final PizzaOrder pizzaOrder) {
         orderRepository.add(stripEmptyOrders(pizzaOrder));
         orderRepository.save();
+        // note, empty orders have been stripped
+        upgradeInventory(pizzaOrder);
         Delivery delivery = deliveryRepository.createDeliveryForOrder(pizzaOrder);
         deliveryRepository.add(delivery);
         deliveryRepository.save();
+    }
+
+    private void upgradeInventory(final PizzaOrder pizzaOrder) {
+        for (OrderItem orderItem : pizzaOrder.getOrderItems()) {
+            long old = orderItem.getPizza().getAmountSold();
+            long oldTotal = orderItem.getPizza().getAmountSoldTotal();
+            // TODO replace with database trigger
+            orderItem.getPizza().setAmountSold(old + orderItem.getAmount());
+            orderItem.getPizza().setAmountSoldTotal(oldTotal + orderItem.getAmount());
+        }
     }
 
     /**
