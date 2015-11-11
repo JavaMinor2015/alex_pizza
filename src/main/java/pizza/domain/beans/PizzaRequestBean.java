@@ -1,20 +1,30 @@
 package pizza.domain.beans;
 
-import pizza.domain.concrete.Order;
-import pizza.domain.concrete.Pizza;
+import lombok.Getter;
+import lombok.Setter;
+import pizza.domain.concrete.persist.Delivery;
+import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.domain.concrete.persist.OrderItem;
+import pizza.domain.concrete.persist.Pizza;
+import pizza.repository.DeliveryRepository;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by alex on 11/3/15.
  */
 @Stateful
+@Getter
+@Setter
 public class PizzaRequestBean implements Serializable {
+
+    private static final long serialVersionUID = -4540135125666933872L;
 
     @Inject
     PizzaRepository pizzaRepository;
@@ -22,23 +32,77 @@ public class PizzaRequestBean implements Serializable {
     @Inject
     OrderRepository orderRepository;
 
+    @Inject
+    DeliveryRepository deliveryRepository;
+
+    /**
+     * Add a pizza to this bean.
+     *
+     * @param pizza the pizza to add
+     */
     public void addPizza(final Pizza pizza) {
         pizzaRepository.add(pizza);
     }
 
-    public void addOrder(final Order order) {
-        orderRepository.addItem(stripEmptyOrders(order));
+    /**
+     * Add an order to this bean.
+     * <p>
+     * The order will be added and persisted.
+     *
+     * @param pizzaOrder the order to add
+     */
+    public void addOrder(final PizzaOrder pizzaOrder) {
+        orderRepository.add(stripEmptyOrders(pizzaOrder));
+        orderRepository.save();
+        Delivery delivery = deliveryRepository.createDeliveryForOrder(pizzaOrder);
+        deliveryRepository.add(delivery);
+        deliveryRepository.save();
     }
 
+    /**
+     * Returns all known pizza's in this bean.
+     *
+     * @return all known pizza's
+     */
     public List<Pizza> getAll() {
-        pizzaRepository.load();
         return pizzaRepository.getAll();
     }
 
-    private Order stripEmptyOrders(final Order order) {
-        order.getOrderItems().stream()
-                .filter(orderItem -> orderItem.getAmount() < 1)
-                .forEach(order::remove);
-        return order;
+    private PizzaOrder stripEmptyOrders(final PizzaOrder pizzaOrder) {
+        Iterator<OrderItem> it = pizzaOrder.getOrderItems().iterator();
+        while (it.hasNext()) {
+            if (it.next().getAmount() < 1) {
+                it.remove();
+            }
+        }
+        return pizzaOrder;
+    }
+
+    /**
+     * Get all orders.
+     *
+     * @return all orders or an empty list
+     */
+    public List<PizzaOrder> getOrders() {
+        return orderRepository.getAll();
+    }
+
+    /**
+     * Find a pizza by its id.
+     *
+     * @param id the id to search for
+     * @return the corresponding pizza or null
+     */
+    public Pizza findById(final Long id) {
+        return pizzaRepository.findById(id);
+    }
+
+    /**
+     * Retrieves all deliveries.
+     *
+     * @return a list of deliveries or an empty list.
+     */
+    public List<Delivery> getDeliveries() {
+        return deliveryRepository.getAll();
     }
 }

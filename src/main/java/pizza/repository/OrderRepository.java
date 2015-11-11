@@ -2,11 +2,11 @@ package pizza.repository;
 
 import lombok.Getter;
 import lombok.Setter;
-import pizza.domain.concrete.Order;
+import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.repository.abs.Repository;
 
 import javax.ejb.Stateful;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,19 +15,16 @@ import java.util.List;
 @Stateful
 @Getter
 @Setter
-public class OrderRepository implements Serializable {
+public class OrderRepository extends Repository<PizzaOrder> implements Serializable {
 
-    private List<Order> orders = new ArrayList<>();
+    private static final long serialVersionUID = -3266726493781699451L;
 
-    public void addItem(final Order order) {
-        orders.add(order);
+    @Override
+    public List<PizzaOrder> getAll() {
+        return getAll(PizzaOrder.class);
     }
 
-    public void load(){
-        // magical persistence here
-    }
-
-    public void save(){
-        // magical persistence here
+    public PizzaOrder findById(final Long id) {
+        return super.findById(PizzaOrder.class, id);
     }
 }
