@@ -16,7 +16,7 @@ import java.util.Arrays;
 @Singleton
 @Startup
 public class ConfigBean {
-    @PersistenceContext(unitName = "PizzaPersist")
+    @PersistenceContext(unitName = "PizzaOracle")
     private EntityManager em;
 
     /**
@@ -24,6 +24,7 @@ public class ConfigBean {
      */
     @PostConstruct
     public void init() {
+
         generateDummyData();
     }
 
