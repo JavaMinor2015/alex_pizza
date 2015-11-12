@@ -1,10 +1,11 @@
 package pizza.domain.concrete.persist;
 
-import lombok.*;
-import pizza.domain.concrete.persist.abs.PersistentEntity;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
-import java.io.Serializable;
+
+import lombok.*;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
 /**
  * Created by alex on 11/3/15.

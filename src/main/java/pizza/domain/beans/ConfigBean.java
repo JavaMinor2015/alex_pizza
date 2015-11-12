@@ -1,14 +1,16 @@
 package pizza.domain.beans;
 
-import pizza.domain.concrete.persist.Ingredient;
-import pizza.domain.concrete.persist.Pizza;
+import java.security.SecureRandom;
+import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Arrays;
+
+import pizza.domain.concrete.persist.Ingredient;
+import pizza.domain.concrete.persist.Pizza;
 
 /**
  * Created by alex on 11/9/15.
@@ -18,6 +20,9 @@ import java.util.Arrays;
 public class ConfigBean {
     @PersistenceContext(unitName = "PizzaOracle")
     private EntityManager em;
+
+    private static final int AMOUNT = 100;
+    private final SecureRandom r = new SecureRandom();
 
     /**
      * Initialize dummy data.
@@ -31,27 +36,27 @@ public class ConfigBean {
     private void generateDummyData() {
         Ingredient peperoni = Ingredient.builder()
                 .name("Peperoni")
-                .amount(100)
+                .amount(r.nextInt(AMOUNT))
                 .measurementType(Ingredient.MeasurementType.GRAM)
-                .extraPrice(1.0)
+                .extraPrice(r.nextDouble() * AMOUNT)
                 .build();
         Ingredient sauce = Ingredient.builder()
                 .name("Tomato Sauce")
-                .amount(200)
+                .amount(r.nextInt(AMOUNT))
                 .measurementType(Ingredient.MeasurementType.MILLILITER)
-                .extraPrice(0.5)
+                .extraPrice(r.nextDouble() * AMOUNT)
                 .build();
         Ingredient pineapple = Ingredient.builder()
                 .name("Pineapple")
-                .amount(50)
+                .amount(r.nextInt(AMOUNT))
                 .measurementType(Ingredient.MeasurementType.GRAM)
-                .extraPrice(2.0)
+                .extraPrice(r.nextDouble() * AMOUNT)
                 .build();
         Ingredient ham = Ingredient.builder()
                 .name("Ham")
-                .amount(10)
+                .amount(r.nextInt(AMOUNT))
                 .measurementType(Ingredient.MeasurementType.GRAM)
-                .extraPrice(0.33)
+                .extraPrice(r.nextDouble() * AMOUNT)
                 .build();
 
         em.persist(
@@ -63,7 +68,7 @@ public class ConfigBean {
                                         sauce
                                 )
                         )
-                        .price(10.0)
+                        .price(r.nextDouble() * AMOUNT)
                         .build()
         );
 
@@ -77,7 +82,7 @@ public class ConfigBean {
                                         sauce
                                 )
                         )
-                        .price(10.0)
+                        .price(r.nextDouble() * AMOUNT)
                         .build()
         );
 

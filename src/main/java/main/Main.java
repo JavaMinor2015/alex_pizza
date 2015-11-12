@@ -1,7 +1,8 @@
 package main;
 
-import javax.persistence.Persistence;
 import java.util.Properties;
+
+import javax.persistence.Persistence;
 
 /**
  * Created by alex on 11/11/15.

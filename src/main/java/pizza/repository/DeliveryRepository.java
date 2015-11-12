@@ -1,16 +1,17 @@
 package pizza.repository;
 
-import pizza.domain.concrete.persist.Delivery;
-import pizza.domain.concrete.persist.PizzaOrder;
-import pizza.repository.abs.Repository;
-import pizza.rules.BusinessRules;
-
-import javax.ejb.Stateful;
-import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.ejb.Stateful;
+import javax.persistence.Query;
+
+import pizza.domain.concrete.persist.Delivery;
+import pizza.domain.concrete.persist.PizzaOrder;
+import pizza.repository.abs.Repository;
+import pizza.rules.BusinessRules;
 
 /**
  * Created by alex on 11/10/15.

@@ -1,13 +1,14 @@
 package pizza.domain.concrete.persist;
 
-import lombok.*;
-import pizza.domain.concrete.persist.abs.PersistentEntity;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.persistence.*;
+
+import lombok.*;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
 /**
  * Created by alex on 11/10/15.

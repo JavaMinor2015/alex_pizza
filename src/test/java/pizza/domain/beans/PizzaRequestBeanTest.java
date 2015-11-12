@@ -1,5 +1,8 @@
 package pizza.domain.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,9 +14,6 @@ import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.repository.DeliveryRepository;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;

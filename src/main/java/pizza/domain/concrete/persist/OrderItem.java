@@ -1,15 +1,16 @@
 package pizza.domain.concrete.persist;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pizza.domain.concrete.persist.abs.PersistentEntity;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import java.io.Serializable;
 
 /**
  * Created by alex on 11/3/15.

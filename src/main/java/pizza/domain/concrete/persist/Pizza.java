@@ -1,14 +1,15 @@
 package pizza.domain.concrete.persist;
 
-import lombok.*;
-import pizza.domain.concrete.persist.abs.PersistentEntity;
+import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import java.io.Serializable;
-import java.util.List;
+
+import lombok.*;
+import pizza.domain.concrete.persist.abs.PersistentEntity;
 
 /**
  * Created by alex on 11/3/15.
