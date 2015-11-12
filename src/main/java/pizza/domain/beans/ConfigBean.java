@@ -1,7 +1,7 @@
 package pizza.domain.beans;
 
-import pizza.domain.concrete.persist.Pizza;
 import pizza.domain.concrete.persist.Ingredient;
+import pizza.domain.concrete.persist.Pizza;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;

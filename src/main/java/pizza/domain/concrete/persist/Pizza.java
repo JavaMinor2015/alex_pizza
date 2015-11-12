@@ -3,7 +3,10 @@ package pizza.domain.concrete.persist;
 import lombok.*;
 import pizza.domain.concrete.persist.abs.PersistentEntity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.util.List;
 

@@ -42,7 +42,7 @@ public class OrderRepositoryTest {
         repository = new OrderRepository();
         repository.setEm(mockManager);
         PizzaOrder order = new PizzaOrder();
-        order.add(new OrderItem(new Pizza("Pizza", null, 5D), 2));
+        order.add(new OrderItem(new Pizza("Pizza", 1, 1, null, 5D), 2));
         order.setId(123L);
         pizzaOrders.add(order);
 

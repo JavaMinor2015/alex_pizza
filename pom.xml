@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <packaging>war</packaging>
-    <name>Pizza Store</name>
+    <name>Pizza Leon/Alex</name>
     <description>Pizza store project</description>
     <properties>
         <jackson.version>1.8.6</jackson.version>
