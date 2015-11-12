@@ -23,6 +23,9 @@ public class Ingredient extends PersistentEntity implements Serializable {
     private MeasurementType measurementType;
     private double extraPrice;
 
+    /**
+     * The type of measurement used.
+     */
     public enum MeasurementType {
         KILOGRAM,
         GRAM,

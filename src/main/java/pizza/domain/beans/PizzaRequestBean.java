@@ -27,13 +27,13 @@ public class PizzaRequestBean implements Serializable {
     private static final long serialVersionUID = -4540135125666933872L;
 
     @Inject
-    PizzaRepository pizzaRepository;
+    private PizzaRepository pizzaRepository;
 
     @Inject
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Inject
-    DeliveryRepository deliveryRepository;
+    private DeliveryRepository deliveryRepository;
 
     /**
      * Add a pizza to this bean.
