@@ -6,7 +6,7 @@ import java.util.Properties;
 /**
  * Created by alex on 11/11/15.
  */
-public class Main {
+public final class Main {
     private Main() {
 
     }
