@@ -24,6 +24,12 @@ public class OrderRepository extends Repository<PizzaOrder> implements Serializa
         return getAll(PizzaOrder.class);
     }
 
+    /**
+     * Find a pizza order by its id.
+     *
+     * @param id the id of the order.
+     * @return the order, null if not found.
+     */
     public PizzaOrder findById(final Long id) {
         return super.findById(PizzaOrder.class, id);
     }

@@ -25,7 +25,7 @@ import java.util.List;
 @Setter
 public abstract class Repository<T extends PersistentEntity> {
 
-    @PersistenceContext(unitName = "PizzaPersist")
+    @PersistenceContext(unitName = "PizzaOracle")
     private EntityManager em;
 
     @Getter(AccessLevel.PROTECTED)

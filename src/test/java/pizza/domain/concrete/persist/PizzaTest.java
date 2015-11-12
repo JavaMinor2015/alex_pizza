@@ -18,12 +18,12 @@ public class PizzaTest {
         Pizza pizza = new Pizza();
         pizza.setName("Pizza2");
         pizza.setPrice(5D);
-        List<Topping> toppings = new ArrayList<>();
-        toppings.add(
-                new Topping("Topping1", 5D)
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(
+                new Ingredient("Topping1", 5, Ingredient.MeasurementType.GRAM, 5D)
         );
-        pizza.setToppings(
-                toppings
+        pizza.setIngredients(
+                ingredients
         );
 
         assertThat(pizza.getPrice(), is(10D));

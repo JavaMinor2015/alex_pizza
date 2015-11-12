@@ -3,9 +3,9 @@ package pizza.domain.beans;
 import lombok.Getter;
 import lombok.Setter;
 import pizza.domain.concrete.persist.Delivery;
-import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
+import pizza.domain.concrete.persist.PizzaOrder;
 import pizza.repository.DeliveryRepository;
 import pizza.repository.OrderRepository;
 import pizza.repository.PizzaRepository;
@@ -27,13 +27,13 @@ public class PizzaRequestBean implements Serializable {
     private static final long serialVersionUID = -4540135125666933872L;
 
     @Inject
-    PizzaRepository pizzaRepository;
+    private PizzaRepository pizzaRepository;
 
     @Inject
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Inject
-    DeliveryRepository deliveryRepository;
+    private DeliveryRepository deliveryRepository;
 
     /**
      * Add a pizza to this bean.
@@ -54,9 +54,21 @@ public class PizzaRequestBean implements Serializable {
     public void addOrder(final PizzaOrder pizzaOrder) {
         orderRepository.add(stripEmptyOrders(pizzaOrder));
         orderRepository.save();
+        // note, empty orders have been stripped
+        upgradeInventory(pizzaOrder);
         Delivery delivery = deliveryRepository.createDeliveryForOrder(pizzaOrder);
         deliveryRepository.add(delivery);
         deliveryRepository.save();
+    }
+
+    private void upgradeInventory(final PizzaOrder pizzaOrder) {
+        for (OrderItem orderItem : pizzaOrder.getOrderItems()) {
+            long old = orderItem.getPizza().getAmountSold();
+            long oldTotal = orderItem.getPizza().getAmountSoldTotal();
+            // TODO replace with database trigger
+            orderItem.getPizza().setAmountSold(old + orderItem.getAmount());
+            orderItem.getPizza().setAmountSoldTotal(oldTotal + orderItem.getAmount());
+        }
     }
 
     /**

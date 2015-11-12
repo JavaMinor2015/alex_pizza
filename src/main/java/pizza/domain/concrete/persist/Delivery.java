@@ -19,11 +19,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedQuery(name = Delivery.FIND_DELIVERY_FOR_STREET,
-        query = "SELECT d FROM Delivery d " +
-                "WHERE (" +
-                "SELECT a FROM Address a WHERE a.streetName = :" + Delivery.PARAM_ADDRESS +
-                ") " +
-                "MEMBER OF d.addresses")
+        query = "SELECT d FROM Delivery d "
+                + "WHERE ("
+                + "SELECT a FROM Address a WHERE a.streetName = :" + Delivery.PARAM_ADDRESS
+                + ") "
+                + "MEMBER OF d.addresses")
 public class Delivery extends PersistentEntity implements Serializable {
     public static final String FIND_DELIVERY_FOR_STREET = "findDeliveryForStreet";
     public static final String PARAM_ADDRESS = "address";
