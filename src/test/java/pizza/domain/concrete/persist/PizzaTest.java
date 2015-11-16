@@ -2,7 +2,6 @@ package pizza.domain.concrete.persist;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;

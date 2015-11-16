@@ -2,13 +2,11 @@ package pizza.domain.beans;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import pizza.domain.concrete.persist.Ingredient;
 import pizza.domain.concrete.persist.Pizza;
 

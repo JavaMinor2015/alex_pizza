@@ -3,12 +3,10 @@ package pizza.service;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.LogManager;

@@ -1,7 +1,6 @@
 package main;
 
 import java.util.Properties;
-
 import javax.persistence.Persistence;
 
 /**

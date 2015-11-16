@@ -1,9 +1,7 @@
 package pizza.domain.concrete.persist;
 
 import java.io.Serializable;
-
 import javax.persistence.Entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
