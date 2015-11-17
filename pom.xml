@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>Pizza</groupId>
     <artifactId>PizzaEE</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <packaging>war</packaging>
-    <name>Pizza Leon/Alex</name>
-    <description>Pizza store project</description>
+    <version>${pizza.version}</version>
+    <modules>
+        <module>PizzaSOAP</module>
+        <module>PizzaFrontend</module>
+        <module>PizzaDomain</module>
+    </modules>
     <properties>
         <jackson.version>1.8.6</jackson.version>
         <argLine>-Xmx128m</argLine>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
+        <pizza.version>1.1-SNAPSHOT</pizza.version>
     </properties>
     <profiles>
         <profile>
@@ -37,7 +40,16 @@
             </build>
         </profile>
     </profiles>
+    <packaging>pom</packaging>
+    <name>Pizza Leon/Alex</name>
+    <description>Pizza store project</description>
+
     <dependencies>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.sonar-plugins.java</groupId>
             <artifactId>sonar-jacoco-listeners</artifactId>
@@ -51,26 +63,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -78,22 +78,8 @@
             <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
     </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -128,17 +114,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.3</version>
-                    <configuration>
-                        <compilerVersion>1.8</compilerVersion>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
-                    </configuration>
-                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-eclipse-plugin</artifactId>
@@ -152,6 +128,17 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <compilerVersion>1.8</compilerVersion>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
