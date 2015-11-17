@@ -25,6 +25,11 @@ public class PizzaServiceBean implements PizzaService {
     }
 
     @Override
+    public List<PizzaOrder> getAllOrders() {
+        return bean.getOrders();
+    }
+
+    @Override
     public Pizza getPizzaById(final long id) {
         return bean.findById(id);
     }
