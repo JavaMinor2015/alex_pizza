@@ -15,11 +15,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>Pizza</groupId>
-            <artifactId>PizzaFrontend</artifactId>
-            <version>${pizza.version}</version>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
@@ -27,7 +22,7 @@
         <dependency> 
             <groupId>Pizza</groupId>
             <artifactId>PizzaDomain</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${pizza.version}</version>
         </dependency>
     </dependencies>
 
