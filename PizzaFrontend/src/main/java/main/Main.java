@@ -13,6 +13,6 @@ public final class Main {
      * @param args arguments
      */
     public static void main(String[] args) {
-//        Persistence.generateSchema("PizzaOracle", new Properties());
+
     }
 }

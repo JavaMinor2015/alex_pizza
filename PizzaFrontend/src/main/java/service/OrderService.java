@@ -8,10 +8,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import pizza.domain.beans.PizzaRequestBean;
+import pizza.domain.concrete.persist.Address;
 import pizza.domain.concrete.persist.Delivery;
 import pizza.domain.concrete.persist.OrderItem;
 import pizza.domain.concrete.persist.Pizza;
-import pizza.domain.concrete.persist.Address;
 import pizza.domain.concrete.persist.PizzaOrder;
 
 /**
