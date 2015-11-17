@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>Pizza</groupId>
     <artifactId>PizzaEE</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${pizza.version}</version>
     <modules>
         <module>PizzaSOAP</module>
         <module>PizzaFrontend</module>
@@ -15,6 +15,7 @@
         <argLine>-Xmx128m</argLine>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
+        <pizza.version>1.1-SNAPSHOT</pizza.version>
     </properties>
     <profiles>
         <profile>
