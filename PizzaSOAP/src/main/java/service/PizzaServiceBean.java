@@ -3,23 +3,41 @@ package service;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
 import javax.jws.WebService;
+import pizza.domain.beans.PizzaRequestBean;
 import pizza.domain.concrete.persist.Pizza;
-import pizza.repository.PizzaRepository;
+import pizza.domain.concrete.persist.PizzaOrder;
+import service.abs.PizzaService;
 
 /**
  * Created by alex on 11/16/15.
  */
 @Stateless
 @WebService
-public class PizzaServiceBean {
+public class PizzaServiceBean implements PizzaService {
 
     @EJB
-    private PizzaRepository pizzaRepository;
+    private PizzaRequestBean bean;
 
-    @WebMethod
-    public List<Pizza> getPizzas() {
-        return pizzaRepository.getAll();
+    @Override
+    public List<Pizza> getAllPizzas() {
+        return bean.getAll();
     }
+
+    @Override
+    public List<PizzaOrder> getAllOrders() {
+        return bean.getOrders();
+    }
+
+    @Override
+    public Pizza getPizzaById(final long id) {
+        return bean.findById(id);
+    }
+
+    @Override
+    public void orderPizza(final PizzaOrder order) {
+        bean.addOrder(order);
+    }
+
+
 }
