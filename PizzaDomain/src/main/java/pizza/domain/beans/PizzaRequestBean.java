@@ -3,8 +3,8 @@ package pizza.domain.beans;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import pizza.domain.concrete.persist.Delivery;
@@ -25,13 +25,13 @@ public class PizzaRequestBean implements Serializable {
 
     private static final long serialVersionUID = -4540135125666933872L;
 
-    @Inject
+    @EJB
     private PizzaRepository pizzaRepository;
 
-    @Inject
+    @EJB
     private OrderRepository orderRepository;
 
-    @Inject
+    @EJB
     private DeliveryRepository deliveryRepository;
 
     /**
@@ -40,7 +40,7 @@ public class PizzaRequestBean implements Serializable {
      * @param pizza the pizza to add
      */
     public void addPizza(final Pizza pizza) {
-        pizzaRepository.add(pizza);
+        pizzaRepository.save(pizza);
     }
 
     /**
@@ -51,13 +51,11 @@ public class PizzaRequestBean implements Serializable {
      * @param pizzaOrder the order to add
      */
     public void addOrder(final PizzaOrder pizzaOrder) {
-        orderRepository.add(stripEmptyOrders(pizzaOrder));
-        orderRepository.save();
+        orderRepository.save(stripEmptyOrders(pizzaOrder));
         // note, empty orders have been stripped
         upgradeInventory(pizzaOrder);
         Delivery delivery = deliveryRepository.createDeliveryForOrder(pizzaOrder);
-        deliveryRepository.add(delivery);
-        deliveryRepository.save();
+        deliveryRepository.save(delivery);
     }
 
     private void upgradeInventory(final PizzaOrder pizzaOrder) {

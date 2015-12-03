@@ -61,17 +61,12 @@ public class OrderRepositoryTest {
     @Test
     public void testAddItem() throws Exception {
         PizzaOrder order = new PizzaOrder();
-        repository.add(order);
+        repository.save(order);
 
         pizzaOrders.add(order);
 
         when(mockTypedQuery.getResultList()).thenReturn(pizzaOrders);
         assertThat(repository.getAll().contains(order), is(true));
-    }
-
-    @Test
-    public void testSave() throws Exception {
-        repository.save();
     }
 
     @Test
