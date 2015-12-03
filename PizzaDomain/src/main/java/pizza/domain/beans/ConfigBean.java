@@ -1,5 +1,7 @@
 package pizza.domain.beans;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
@@ -7,6 +9,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import pizza.domain.beans.socket.ReceiveEndpoint;
 import pizza.domain.concrete.persist.Ingredient;
 import pizza.domain.concrete.persist.Pizza;
 
@@ -27,7 +30,7 @@ public class ConfigBean {
      */
     @PostConstruct
     public void init() {
-
+        //runWebSocketTest();
         generateDummyData();
     }
 
@@ -86,5 +89,20 @@ public class ConfigBean {
 
         em.flush();
 
+    }
+
+    private void runWebSocketTest() {
+        try {
+            ReceiveEndpoint endpoint  = new ReceiveEndpoint(new URI("ws://echo.websocket.org/"));
+            try {
+                Thread.sleep(3000);
+                endpoint.sendMessage("Websockets rock");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }
