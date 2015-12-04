@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.Query;
 import pizza.domain.concrete.persist.Delivery;
 import pizza.domain.concrete.persist.PizzaOrder;
@@ -14,7 +14,7 @@ import pizza.rules.BusinessRules;
 /**
  * Created by alex on 11/10/15.
  */
-@Stateful
+@Stateless
 public class DeliveryRepository extends Repository<Delivery> implements Serializable {
 
     private static final long serialVersionUID = 2038776702918648917L;
@@ -22,6 +22,11 @@ public class DeliveryRepository extends Repository<Delivery> implements Serializ
     @Override
     public List<Delivery> getAll() {
         return getAll(Delivery.class);
+    }
+
+    @Override
+    public Delivery findById(final Long idToFind) {
+        return super.findById(Delivery.class, idToFind);
     }
 
     /**

@@ -2,6 +2,7 @@ package pizza.repository.abs;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -77,6 +78,8 @@ public abstract class Repository<T> {
             return new ArrayList<>();
         }
     }
+
+    public abstract T findById(final Long idToFind);
 
     /**
      * Find an item by its id attribute.
