@@ -9,6 +9,7 @@
         <module>PizzaSOAP</module>
         <module>PizzaFrontend</module>
         <module>PizzaDomain</module>
+        <module>RestAPI</module>
     </modules>
     <properties>
         <jackson.version>1.8.6</jackson.version>
