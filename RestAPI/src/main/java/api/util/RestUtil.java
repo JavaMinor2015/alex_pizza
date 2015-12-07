@@ -17,6 +17,7 @@ public enum RestUtil {
     public static Response buildResponse(
             final HateoasResponse<RestDecorator> item
     ) {
+        //TODO refine
         String r = new GsonBuilder().create().toJson(item, HateoasResponse.class);
         return Response.ok(r).build();
     }

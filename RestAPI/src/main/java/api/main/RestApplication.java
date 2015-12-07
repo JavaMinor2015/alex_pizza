@@ -14,7 +14,7 @@ public class RestApplication extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         final Set<Class<?>> classes = new HashSet<Class<?>>();
-//        classes.add(RestController.class);
+        // TODO add endpoint implementations as they come
         classes.add(PizzaRestController.class);
         return classes;
     }
