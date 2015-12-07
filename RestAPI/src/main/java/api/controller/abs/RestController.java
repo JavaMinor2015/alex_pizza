@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.xml.ws.Response;
+import javax.ws.rs.core.Response;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pizza.domain.concrete.persist.abs.PersistentEntity;

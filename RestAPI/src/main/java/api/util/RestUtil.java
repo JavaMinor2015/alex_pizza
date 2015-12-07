@@ -3,19 +3,22 @@ package api.util;
 import api.domain.RestDecorator;
 import api.domain.abs.HateoasResponse;
 import api.error.RestException;
+import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.ws.Response;
+import javax.ws.rs.core.Response;
 
 /**
  * Created by alex on 12/4/15.
  */
-public enum RestUtil {;
+public enum RestUtil {
+    ;
 
-    public static Response<RestDecorator> buildResponse(
+    public static Response buildResponse(
             final HateoasResponse<RestDecorator> item
     ) {
-        return null;
+        String r = new GsonBuilder().create().toJson(item, HateoasResponse.class);
+        return Response.ok(r).build();
     }
 
     public static HateoasResponse<RestDecorator> createHateoas(
