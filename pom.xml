@@ -10,6 +10,7 @@
         <module>PizzaFrontend</module>
         <module>PizzaDomain</module>
         <module>RestAPI</module>
+        <module>PizzaRest</module>
     </modules>
     <properties>
         <jackson.version>1.8.6</jackson.version>
