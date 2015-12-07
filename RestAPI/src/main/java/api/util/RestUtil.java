@@ -13,13 +13,19 @@ import javax.ws.rs.core.Response;
  */
 public enum RestUtil {
     ;
+    private static final GsonBuilder GSON = new GsonBuilder();
 
     public static Response buildResponse(
             final HateoasResponse<RestDecorator> item
     ) {
         //TODO refine
-        String r = new GsonBuilder().create().toJson(item, HateoasResponse.class);
+        String r = GSON.create().toJson(item, HateoasResponse.class);
         return Response.ok(r).build();
+    }
+
+    public static Response buildError(final RestException exception) {
+        // TODO expand?
+        return Response.noContent().build();
     }
 
     public static HateoasResponse<RestDecorator> createHateoas(

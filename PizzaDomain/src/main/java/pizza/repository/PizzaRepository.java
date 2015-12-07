@@ -33,4 +33,9 @@ public class PizzaRepository extends Repository<Pizza> implements Serializable {
     public List<Pizza> getAll() {
         return super.getAll(Pizza.class);
     }
+
+    @Override
+    public List<Pizza> getAll(final int start, final int limit) {
+        return super.getAll(start, limit, Pizza.class);
+    }
 }

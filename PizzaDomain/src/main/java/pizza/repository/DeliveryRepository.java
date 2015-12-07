@@ -25,6 +25,11 @@ public class DeliveryRepository extends Repository<Delivery> implements Serializ
     }
 
     @Override
+    public List<Delivery> getAll(final int start, final int limit) {
+        return super.getAll(start, limit, Delivery.class);
+    }
+
+    @Override
     public Delivery findById(final Long idToFind) {
         return super.findById(Delivery.class, idToFind);
     }

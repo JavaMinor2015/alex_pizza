@@ -2,7 +2,6 @@ package pizza.repository.abs;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -19,7 +18,7 @@ import pizza.rules.Globals;
 
 /**
  * Created by alex on 11/9/15.
- * <p>
+ * <p/>
  * An abstract repository which manages PersistentEntity's.
  *
  * @param <T> the generic type.
@@ -28,7 +27,8 @@ import pizza.rules.Globals;
 @Setter
 public abstract class Repository<T> {
 
-    private static final Logger LOGGER = LogManager.getLogger(Repository.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Repository
+            .class.getName());
 
     @PersistenceContext(unitName = Globals.PERSISTENCE_UNIT)
     private EntityManager em;
@@ -37,6 +37,16 @@ public abstract class Repository<T> {
      * Retrieve all items.
      */
     public abstract List<T> getAll();
+
+    /**
+     * Retrieve <b>limit</b> items starting from <b>start</b>.
+     *
+     * @param start starting position
+     * @param limit max amount of items
+     * @return a list with less than <b>limit</b> items, or empty
+     */
+    public abstract List<T> getAll(final int start, final int limit);
+
 
     /**
      * Add an item to the repository and persist.
@@ -79,6 +89,12 @@ public abstract class Repository<T> {
         }
     }
 
+    /**
+     * Find an item by its id.
+     *
+     * @param idToFind the id to find
+     * @return the corresponding item, or null
+     */
     public abstract T findById(final Long idToFind);
 
     /**
@@ -92,7 +108,6 @@ public abstract class Repository<T> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> root = cq.from(clazz);
-
         cq.where(
                 cb.equal(root.get(Globals.PERSISTENCE_ID_IDENTIFIER), idToFind)
         );
@@ -102,6 +117,34 @@ public abstract class Repository<T> {
         } catch (NoResultException e) {
             LOGGER.warn(e);
             return null;
+        }
+    }
+
+    /**
+     * Retrieve <b>limit</b> items starting from <b>start</b>.
+     *
+     * @param start starting position
+     * @param limit max amount of items
+     * @param clazz the type of <b>item</b>
+     * @return a list with less than <b>limit</b> items, or empty
+     */
+    protected List<T> getAll(final int start, final int limit, final Class<T>
+            clazz) {
+        if (limit < 0 | start < 0) {
+            return new ArrayList<>();
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(clazz);
+        Root<T> root = cq.from(clazz);
+        cq.select(root);
+        TypedQuery<T> q = em.createQuery(cq)
+                .setFirstResult(start)
+                .setMaxResults(limit);
+        try {
+            return q.getResultList();
+        } catch (NoResultException e) {
+            LOGGER.warn(e);
+            return new ArrayList<>();
         }
     }
 }

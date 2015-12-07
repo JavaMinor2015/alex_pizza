@@ -14,13 +14,19 @@ import pizza.repository.abs.Repository;
 @Stateless
 @Getter
 @Setter
-public class OrderRepository extends Repository<PizzaOrder> implements Serializable {
+public class OrderRepository extends Repository<PizzaOrder> implements
+        Serializable {
 
     private static final long serialVersionUID = -3266726493781699451L;
 
     @Override
     public List<PizzaOrder> getAll() {
         return getAll(PizzaOrder.class);
+    }
+
+    @Override
+    public List<PizzaOrder> getAll(final int start, final int limit) {
+        return super.getAll(start, limit, PizzaOrder.class);
     }
 
     /**

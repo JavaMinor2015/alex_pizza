@@ -2,6 +2,7 @@ package api.controller.abs;
 
 import api.domain.RestDecorator;
 import api.domain.abs.HateoasResponse;
+import api.error.RestException;
 import api.util.RestUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import pizza.domain.concrete.persist.abs.PersistentEntity;
 import pizza.repository.abs.Repository;
 
@@ -27,6 +30,9 @@ import pizza.repository.abs.Repository;
 public abstract class RestController<
         T extends PersistentEntity,
         R extends Repository<T>> {
+
+    private static final Logger LOGGER = LogManager.getLogger(RestController
+            .class);
 
     // may not be protected or:
     // Illegal non-business method access on no-interface view
@@ -54,10 +60,16 @@ public abstract class RestController<
             @DefaultValue("0") @QueryParam("start") final int start,
             @DefaultValue("10") @QueryParam("limit") final int limit
     ) {
-        final List<T> items = repository.getAll();
-        final HateoasResponse<RestDecorator> response = RestUtil
-                .createHateoas(decorateItems(items), getUrl(), start, limit);
-        return RestUtil.buildResponse(response);
+        final List<T> items = repository.getAll(start, limit);
+        try {
+            final HateoasResponse<RestDecorator> response = RestUtil
+                    .createHateoas(decorateItems(items), getUrl(), start,
+                            limit);
+            return RestUtil.buildResponse(response);
+        } catch (RestException exception) {
+            LOGGER.info(exception.getMessage(), exception);
+            return RestUtil.buildError(exception);
+        }
     }
 
     /**
@@ -70,9 +82,14 @@ public abstract class RestController<
     @Path("/{id}")
     public Response get(@PathParam("id") final long id) {
         final T item = repository.findById(id);
-        final HateoasResponse<RestDecorator> response = RestUtil
-                .createHateoas(decorateItem(item), getUrl(), (int) id, 1);
-        return RestUtil.buildResponse(response);
+        try {
+            final HateoasResponse<RestDecorator> response = RestUtil
+                    .createHateoas(decorateItem(item), getUrl(), (int) id, 1);
+            return RestUtil.buildResponse(response);
+        } catch (RestException exception) {
+            LOGGER.info(exception.getMessage(), exception);
+            return RestUtil.buildError(exception);
+        }
     }
 
     @POST
