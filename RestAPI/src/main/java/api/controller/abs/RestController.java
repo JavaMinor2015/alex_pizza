@@ -7,6 +7,7 @@ import api.util.RestUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,6 +39,12 @@ public abstract class RestController<
     // Illegal non-business method access on no-interface view
     @Setter
     private R repository;
+
+    /**
+     * Use this @PostConstruct method to set the repository in the super class.
+     */
+    @PostConstruct
+    public abstract void init();
 
     /**
      * The url specific to the entity.
@@ -94,7 +101,7 @@ public abstract class RestController<
 
     @POST
     @Path("/create")
-    public Response post(final RestDecorator t) {
+    public Response post(final String json) {
         // TODO implement
         // TODO if exists > put
         final HateoasResponse<RestDecorator> response = null;
@@ -103,7 +110,7 @@ public abstract class RestController<
 
     @PUT
     @Path("/update")
-    public Response put(final RestDecorator t) {
+    public Response put(final String json) {
         // TODO implement
         final HateoasResponse<RestDecorator> response = null;
         return RestUtil.buildResponse(response);

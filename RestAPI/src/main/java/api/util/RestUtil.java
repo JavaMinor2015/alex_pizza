@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Response;
+import pizza.rules.Globals;
 
 /**
  * Created by alex on 12/4/15.
@@ -37,6 +38,8 @@ public enum RestUtil {
             throw new RestException("Creation of Hateoas Object failed: no "
                     + "item provided.");
         }
+        // TODO will never occur because of earlier exception on repository
+        // level
         if (limit < 1 | start < 0) {
             throw new RestException("Creation of Hateoas Object failed: "
                     + "illegal start or limit provided.");
@@ -55,6 +58,8 @@ public enum RestUtil {
             throw new RestException("Creation of response failed: no items "
                     + "provided.");
         }
+        // TODO will never occur because of earlier exception on repository
+        // level
         if (limit < 1 | start < 0) {
             throw new RestException("Creation of Hateoas Object failed: "
                     + "illegal start or limit provided.");
@@ -78,7 +83,8 @@ public enum RestUtil {
             // the requested limit of items
             return "";
         }
-        return baseUri + "?start=" + (start + limit) + "&limit=" + limit;
+        return baseUri + "?" + Globals.PAGE_DELIMITER + "=" + (start + limit)
+                + "&" + Globals.PER_PAGE_DELIMITER + "=" + limit;
     }
 
     private static String buildPrevUri(
@@ -94,11 +100,13 @@ public enum RestUtil {
         if (start - limit < 0) {
             // if going back takes us below 0
             // start at 0
-            return baseUri + "?start=" + 0 + "&limit=" + limit;
+            return baseUri + "?" + Globals.PAGE_DELIMITER + "=" + 0 + "&" +
+                    Globals.PER_PAGE_DELIMITER + "=" + limit;
         }
 
         // default
-        return baseUri + "?start=" + (start - limit) + "&limit=" + limit;
+        return baseUri + "?" + Globals.PAGE_DELIMITER + "=" + (start - limit)
+                + "&" + Globals.PER_PAGE_DELIMITER + "=" + limit;
     }
 
     private static String buildSelfUri(
@@ -110,7 +118,8 @@ public enum RestUtil {
         if (limitIsHigherThanItems(items, limit)) {
             lim = items.size();
         }
-        return baseUri + "?start=" + start + "&limit=" + lim;
+        return baseUri + "?" + Globals.PAGE_DELIMITER + "=" + start + "&" +
+                Globals.PER_PAGE_DELIMITER + "=" + lim;
     }
 
     private static boolean limitIsHigherThanItems(
