@@ -66,4 +66,7 @@ target/
 PizzaDomain/target/
 PizzaFrontend/target/
 PizzaSOAP/target/
+AngularFrontend/node_modules
+AngularFrontend/bower_components
+AngularFrontend/.tmp
 .sonar/

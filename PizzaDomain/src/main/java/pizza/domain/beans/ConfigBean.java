@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import pizza.domain.beans.socket.ReceiveEndpoint;
 import pizza.domain.concrete.persist.Ingredient;
 import pizza.domain.concrete.persist.Pizza;
+import pizza.rules.Globals;
 
 /**
  * Created by alex on 11/9/15.
@@ -19,7 +20,7 @@ import pizza.domain.concrete.persist.Pizza;
 @Singleton
 @Startup
 public class ConfigBean {
-    @PersistenceContext(unitName = "PizzaOracleDomain")
+    @PersistenceContext(unitName = Globals.PERSISTENCE_UNIT)
     private EntityManager em;
 
     private static final int AMOUNT = 100;

@@ -3,32 +3,35 @@ package pizza.repository.abs;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import lombok.AccessLevel;
+import javax.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
-import pizza.domain.concrete.persist.abs.PersistentEntity;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import pizza.rules.Globals;
 
 /**
  * Created by alex on 11/9/15.
- * <p>
+ * <p/>
  * An abstract repository which manages PersistentEntity's.
  *
  * @param <T> the generic type.
  */
 @Getter
 @Setter
-public abstract class Repository<T extends PersistentEntity> {
+public abstract class Repository<T> {
 
-    @PersistenceContext(unitName = "PizzaOracleDomain")
+    private static final Logger LOGGER = LogManager.getLogger(Repository
+            .class.getName());
+
+    @PersistenceContext(unitName = Globals.PERSISTENCE_UNIT)
     private EntityManager em;
-
-    @Getter(AccessLevel.PROTECTED)
-    private List<T> itemList = new ArrayList<>();
 
     /**
      * Retrieve all items.
@@ -36,22 +39,34 @@ public abstract class Repository<T extends PersistentEntity> {
     public abstract List<T> getAll();
 
     /**
-     * Persist all items in this repository.
+     * Retrieve <b>limit</b> items starting from <b>start</b>.
+     *
+     * @param start starting position
+     * @param limit max amount of items
+     * @return a list with less than <b>limit</b> items, or empty
      */
-    public void save() {
-        itemList.forEach(getEm()::persist);
-        getEm().flush();
+    public abstract List<T> getAll(final int start, final int limit);
+
+
+    /**
+     * Add an item to the repository and persist.
+     *
+     * @param item the item to save
+     */
+    @Transactional
+    public void save(final T item) {
+        em.persist(item);
+        em.flush();
     }
 
     /**
-     * Add an item to this repository.
-     * <p>
-     * Note: call {@link #save()} to persist added items.
+     * Update an item in the repository.
      *
-     * @param item the item to add.
+     * @param item the item to update.
      */
-    public void add(final T item) {
-        itemList.add(item);
+    @Transactional
+    public void update(final T item) {
+        em.merge(item);
     }
 
     /**
@@ -61,32 +76,76 @@ public abstract class Repository<T extends PersistentEntity> {
      * @return a list of items, empty if none found
      */
     protected List<T> getAll(final Class<T> clazz) {
-        List<T> response;
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> t = cq.from(clazz);
         cq.select(t);
         TypedQuery<T> q = em.createQuery(cq);
-        response = q.getResultList();
-        return response;
+        try {
+            return q.getResultList();
+        } catch (NoResultException e) {
+            LOGGER.warn(e);
+            return new ArrayList<>();
+        }
     }
+
+    /**
+     * Find an item by its id.
+     *
+     * @param idToFind the id to find
+     * @return the corresponding item, or null
+     */
+    public abstract T findById(final Long idToFind);
 
     /**
      * Find an item by its id attribute.
      *
      * @param clazz    the item's class.
      * @param idToFind the id to find
-     * @return the item, or null
+     * @return the item, or null if not found
      */
     protected T findById(final Class<T> clazz, final Long idToFind) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> root = cq.from(clazz);
-
         cq.where(
-                cb.equal(root.get("id"), idToFind)
+                cb.equal(root.get(Globals.PERSISTENCE_ID_IDENTIFIER), idToFind)
         );
         TypedQuery<T> q = em.createQuery(cq);
-        return q.getSingleResult();
+        try {
+            return q.getSingleResult();
+        } catch (NoResultException e) {
+            LOGGER.warn(e);
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve <b>limit</b> items starting from <b>start</b>.
+     *
+     * @param start starting position
+     * @param limit max amount of items
+     * @param clazz the type of <b>item</b>
+     * @return a list with less than <b>limit</b> items, or empty
+     */
+    protected List<T> getAll(final int start, final int limit, final Class<T>
+            clazz) {
+        if (limit < 0 | start < 0) {
+            return new ArrayList<>();
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(clazz);
+        Root<T> root = cq.from(clazz);
+        cq.select(root);
+        TypedQuery<T> q = em.createQuery(cq)
+                .setFirstResult(start)
+                .setMaxResults(limit);
+        try {
+            return q.getResultList();
+        } catch (NoResultException e) {
+            LOGGER.warn(e);
+            return new ArrayList<>();
+        }
     }
 }
+
