@@ -11,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import pizza.domain.concrete.persist.Pizza;
+import pizza.rules.Globals;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -21,6 +22,9 @@ import static org.junit.Assert.assertThat;
  * @author Alex
  */
 public class RestUtilTest {
+    public static final String URL = "http://api/woops";
+    public static final String HTTP_API_WOOPS = "http://api/woops?";
+    
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -103,28 +107,28 @@ public class RestUtilTest {
 
         // start at 0, limit of 1, item size of 1
         // self should reflect that
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 0, 1);
-        assertThat(response.getSelf(), is("http://api/woops?start=0&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 0, 1);
+        assertThat(response.getSelf(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=0&" + Globals.PER_PAGE_DELIMITER + "=1"));
 
         // start at 0, limit of 10, item size of 1
         // self should have limit of 1
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 0, 10);
-        assertThat(response.getSelf(), is("http://api/woops?start=0&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 0, 10);
+        assertThat(response.getSelf(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=0&" + Globals.PER_PAGE_DELIMITER + "=1"));
 
         // start at 1, limit of 1, item size of 1
         // self should reflect that
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 1, 1);
-        assertThat(response.getSelf(), is("http://api/woops?start=1&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 1, 1);
+        assertThat(response.getSelf(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=1&" + Globals.PER_PAGE_DELIMITER + "=1"));
 
         // start at 1, limit of 10, item size of 1
         // self should have limit of 1
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 1, 10);
-        assertThat(response.getSelf(), is("http://api/woops?start=1&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 1, 10);
+        assertThat(response.getSelf(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=1&" + Globals.PER_PAGE_DELIMITER + "=1"));
 
         // limit at 0
         // exception should be thrown
         thrown.expect(RestException.class);
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 1, 0);
+        response = RestUtil.createHateoas(testObj, URL, 1, 0);
     }
 
     @Test
@@ -134,18 +138,18 @@ public class RestUtilTest {
 
         // start at 0, limit at 1, item size of 1
         // next should start at 1
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 0, 1);
-        assertThat(response.getNext(), is("http://api/woops?start=1&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 0, 1);
+        assertThat(response.getNext(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=1&" + Globals.PER_PAGE_DELIMITER + "=1"));
 
         // start at 0, limit at 10, item size of 1
         // there is no next if limit is not reached
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 0, 10);
+        response = RestUtil.createHateoas(testObj, URL, 0, 10);
         assertThat(response.getNext(), is(""));
 
         // start at 1, limit at 1, item size of 1
         // next should start at 2
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 1, 1);
-        assertThat(response.getNext(), is("http://api/woops?start=2&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 1, 1);
+        assertThat(response.getNext(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=2&" + Globals.PER_PAGE_DELIMITER + "=1"));
     }
 
     @Test
@@ -155,17 +159,17 @@ public class RestUtilTest {
 
         // start at 0, limit at 1, item size of 1
         // prev should be empty
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 0, 1);
+        response = RestUtil.createHateoas(testObj, URL, 0, 1);
         assertThat(response.getPrev(), is(""));
 
         // start 1, limit at 1, item size of 1
         // prev should start at 0
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 1, 1);
-        assertThat(response.getPrev(), is("http://api/woops?start=0&limit=1"));
+        response = RestUtil.createHateoas(testObj, URL, 1, 1);
+        assertThat(response.getPrev(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=0&" + Globals.PER_PAGE_DELIMITER + "=1"));
 
         // start at 1, limit at 5, item size of 1
         // prev should start at 0
-        response = RestUtil.createHateoas(testObj, "http://api/woops", 1, 5);
-        assertThat(response.getPrev(), is("http://api/woops?start=0&limit=5"));
+        response = RestUtil.createHateoas(testObj, URL, 1, 5);
+        assertThat(response.getPrev(), is(HTTP_API_WOOPS + Globals.PAGE_DELIMITER + "=0&" + Globals.PER_PAGE_DELIMITER + "=5"));
     }
 }
