@@ -1,4 +1,4 @@
-package Pizza.rest;
+package Pizza.adapters;
 
 import Pizza.model.PizzaJson;
 import com.google.gson.*;
@@ -7,10 +7,10 @@ import java.lang.reflect.Type;
 /**
  * Created by alex on 12/14/15.
  */
-public class PizzaAdapter implements JsonDeserializer<PizzaJson> {
+public class PizzaDeserializer extends AbstractDeserializer<PizzaJson> {
+
     @Override
     public PizzaJson deserialize(final JsonElement jsonElement, final Type type, final JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-
         PizzaJson pizzaJson = new PizzaJson();
         JsonObject json = jsonElement.getAsJsonObject();
         JsonArray items = json.getAsJsonArray("items");
@@ -23,5 +23,10 @@ public class PizzaAdapter implements JsonDeserializer<PizzaJson> {
             break;
         }
         return pizzaJson;
+    }
+
+    @Override
+    public Class<PizzaJson> getClazz() {
+        return PizzaJson.class;
     }
 }

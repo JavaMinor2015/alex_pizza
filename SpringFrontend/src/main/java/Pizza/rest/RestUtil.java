@@ -1,7 +1,7 @@
 package Pizza.rest;
 
 
-import Pizza.model.PizzaJson;
+import Pizza.adapters.AbstractDeserializer;
 import com.google.gson.GsonBuilder;
 
 /**
@@ -10,10 +10,14 @@ import com.google.gson.GsonBuilder;
 public enum RestUtil {
     ;
 
-    public static PizzaJson createFromJson(final String json) {
+    public static GsonBuilder getBuilder(final AbstractDeserializer... deserializers) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(PizzaJson.class, new PizzaAdapter());
-        return gsonBuilder.create().fromJson(json, PizzaJson.class);
+
+        for (AbstractDeserializer deserializer : deserializers) {
+            gsonBuilder.registerTypeAdapter(deserializer.getClazz(),deserializer);
+        }
+
+        return gsonBuilder;
     }
 }
 

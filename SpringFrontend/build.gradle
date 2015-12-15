@@ -25,6 +25,9 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+//    maven{
+//        url "/home/alex/.m2/repository"
+//    }
 }
 
 configurations {
@@ -36,6 +39,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.projectlombok:lombok:1.16.6')
     compile('com.google.code.gson:gson:2.3.1')
+//    compile('Pizza:PizzaDomain:1.1-SNAPSHOT')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
